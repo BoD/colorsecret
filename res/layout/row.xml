@@ -8,6 +8,5 @@
     android:gravity="center_vertical"
     android:orientation="horizontal"
     android:background="@drawable/row_bg"
-    android:padding="4dip"
 >
 </LinearLayout>

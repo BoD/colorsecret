@@ -13,10 +13,6 @@ package org.jraf.android.slavebody.activity;
 
 import org.jraf.android.slavebody.Constants;
 import org.jraf.android.slavebody.R;
-import org.jraf.android.slavebody.R.drawable;
-import org.jraf.android.slavebody.R.id;
-import org.jraf.android.slavebody.R.layout;
-import org.jraf.android.slavebody.R.string;
 import org.jraf.android.slavebody.model.CodePeg;
 import org.jraf.android.slavebody.model.Game;
 
@@ -69,7 +65,7 @@ public class MainActivity extends Activity {
     private View createRow(final int nbHoles, final int rowIndex) {
         final LinearLayout res = (LinearLayout) mLayoutInflater.inflate(R.layout.row, null, false);
         for (int i = 0; i < nbHoles; i++) {
-            final View peg = mLayoutInflater.inflate(R.layout.peg, null, false);
+            final View peg = mLayoutInflater.inflate(R.layout.peg, res, false);
             peg.setClickable(true);
             final int selectingPegIndex = i;
             peg.setOnClickListener(new OnClickListener() {
@@ -77,7 +73,7 @@ public class MainActivity extends Activity {
                     mSelectingRowIndex = rowIndex;
                     mSelectingPegIndex = selectingPegIndex;
                     mSelectingPeg = peg;
-
+                    showDialog(DIALOG_CHOOSE_PEG);
                 }
             });
             res.addView(peg);
@@ -89,7 +85,7 @@ public class MainActivity extends Activity {
     private View createHintPegs(final int nbHoles) {
         final LinearLayout res = (LinearLayout) mLayoutInflater.inflate(R.layout.hints, null, false);
         for (int i = 0; i < nbHoles; i++) {
-            final ImageView peg = (ImageView) mLayoutInflater.inflate(R.layout.peg, null, false);
+            final ImageView peg = (ImageView) mLayoutInflater.inflate(R.layout.peg, res, false);
             peg.setImageResource(R.drawable.peg_hint_empty);
             res.addView(peg);
         }
@@ -129,15 +125,17 @@ public class MainActivity extends Activity {
         switch (id) {
             case DIALOG_CHOOSE_PEG:
                 builder.setTitle(R.string.dialog_choosePeg_title);
-                builder.setSingleChoiceItems(mPegListAdapter, -1, mChoosePegOnClickListener);
+                builder.setSingleChoiceItems(new PegListAdapter(this), -1, mChoosePegOnClickListener);
                 builder.setNegativeButton(android.R.string.cancel, null);
             break;
         }
         return builder.create();
     }
 
-    private DialogInterface.OnClickListener mChoosePegOnClickListener;
+    private final DialogInterface.OnClickListener mChoosePegOnClickListener = new DialogInterface.OnClickListener() {
 
-    private PegListAdapter mPegListAdapter;
-
+        public void onClick(final DialogInterface dialog, final int which) {
+            dialog.dismiss();
+        }
+    };
 }

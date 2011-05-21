@@ -5,17 +5,17 @@
     <color name="peg_bg_pressed">#FDD</color>
     <color name="peg_bg_focused">#FCC</color>
 
-    <color name="peg_inner_orange">#F80</color>
+    <color name="peg_inner_orange">#FFF</color>
     <color name="peg_outer_orange">#F84</color>
-    <color name="peg_inner_red">#F00</color>
+    <color name="peg_inner_red">#FFF</color>
     <color name="peg_outer_red">#F44</color>
-    <color name="peg_inner_green">#0F0</color>
+    <color name="peg_inner_green">#FFF</color>
     <color name="peg_outer_green">#4F4</color>
-    <color name="peg_inner_yellow">#FF0</color>
+    <color name="peg_inner_yellow">#FFF</color>
     <color name="peg_outer_yellow">#FF4</color>
-    <color name="peg_inner_blue">#00F</color>
+    <color name="peg_inner_blue">#FFF</color>
     <color name="peg_outer_blue">#44F</color>
-    <color name="peg_inner_magenta">#F0F</color>
+    <color name="peg_inner_magenta">#FFF</color>
     <color name="peg_outer_magenta">#F4F</color>
 
 </resources>

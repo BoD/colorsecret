@@ -19,6 +19,16 @@ public class PegUtil {
         switch (codePeg) {
             case ORANGE:
                 return R.drawable.peg_code_orange;
+            case RED:
+                return R.drawable.peg_code_red;
+            case GREEN:
+                return R.drawable.peg_code_green;
+            case YELLOW:
+                return R.drawable.peg_code_yellow;
+            case BLUE:
+                return R.drawable.peg_code_blue;
+            case MAGENTA:
+                return R.drawable.peg_code_magenta;
         }
         throw new IllegalArgumentException("No drawable for code peg " + codePeg);
 

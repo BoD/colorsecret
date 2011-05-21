@@ -4,6 +4,9 @@
 
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_marginLeft="2dip"
+    android:layout_marginTop="1dip"
+    android:layout_marginBottom="1dip"
     
     android:src="@drawable/peg_code_empty"
     android:background="@drawable/peg_bg"

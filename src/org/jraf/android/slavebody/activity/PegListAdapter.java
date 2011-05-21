@@ -12,9 +12,11 @@
 package org.jraf.android.slavebody.activity;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.jraf.android.slavebody.R;
 import org.jraf.android.slavebody.model.CodePeg;
+import org.jraf.android.slavebody.util.PegUtil;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -26,8 +28,8 @@ import android.widget.ImageView;
 public class PegListAdapter extends ArrayAdapter<CodePeg> {
     private final Context mContext;
 
-    public PegListAdapter(final Context context, final int layoutResourceId, final ArrayList<CodePeg> objects) {
-        super(context, layoutResourceId, objects);
+    public PegListAdapter(final Context context) {
+        super(context, 0, new ArrayList<CodePeg>(Arrays.asList(CodePeg.values())));
         mContext = context;
     }
 
@@ -41,12 +43,7 @@ public class PegListAdapter extends ArrayAdapter<CodePeg> {
         final ImageView imageView = (ImageView) view.findViewById(R.id.peg);
 
         final CodePeg codePeg = getItem(position);
-        switch (codePeg) {
-            case ORANGE:
-                imageView.setImageResource(R.drawable.peg_code_empty);
-
-            break;
-        }
+        imageView.setImageResource(PegUtil.getDrawable(codePeg));
         return view;
     }
 }
