@@ -24,7 +24,6 @@ public class Game {
 
     private int mCurrentGuess = 0;
 
-
     /**
      * @param nbHoles
      *            number of holes for each row.
