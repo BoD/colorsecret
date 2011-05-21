@@ -1,0 +1,18 @@
+<shape
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle"
+>
+    <size
+        android:width="@dimen/peg_code"
+        android:height="@dimen/peg_code" />
+    <padding
+        android:left="@dimen/peg_padding"
+        android:top="@dimen/peg_padding"
+        android:right="@dimen/peg_padding"
+        android:bottom="@dimen/peg_padding" />
+    <gradient
+        android:type="radial"
+        android:gradientRadius="45"
+        android:startColor="@color/peg_inner_green"
+        android:endColor="@color/peg_outer_green" />
+</shape>

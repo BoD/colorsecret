@@ -12,5 +12,5 @@
 package org.jraf.android.slavebody.model;
 
 public enum CodePeg {
-    BLACK, RED, GREEN, YELLOW, BLUE, MAGENTA,
+    ORANGE, RED, GREEN, YELLOW, BLUE, MAGENTA,
 }

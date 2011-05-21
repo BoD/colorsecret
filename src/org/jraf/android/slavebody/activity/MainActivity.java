@@ -9,9 +9,21 @@
  *
  * Copyright 2011 Benoit 'BoD' Lubek (BoD@JRAF.org).  All Rights Reserved.
  */
-package org.jraf.android.slavebody;
+package org.jraf.android.slavebody.activity;
+
+import org.jraf.android.slavebody.Constants;
+import org.jraf.android.slavebody.R;
+import org.jraf.android.slavebody.R.drawable;
+import org.jraf.android.slavebody.R.id;
+import org.jraf.android.slavebody.R.layout;
+import org.jraf.android.slavebody.R.string;
+import org.jraf.android.slavebody.model.CodePeg;
+import org.jraf.android.slavebody.model.Game;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +34,10 @@ import android.widget.LinearLayout;
 
 public class MainActivity extends Activity {
     private static final String TAG = Constants.TAG + MainActivity.class.getSimpleName();
+
+    private static final int DIALOG_CHOOSE_PEG = 0;
+
+    private Game mGame;
 
     private ViewGroup mRootView;
     private LayoutInflater mLayoutInflater;
@@ -35,8 +51,9 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        mLayoutInflater = LayoutInflater.from(this);
+        mGame = new Game(Constants.DEFAULT_NB_HOLES, Constants.DEFAULT_NB_ROWS);
 
+        mLayoutInflater = LayoutInflater.from(this);
         mRootView = (ViewGroup) findViewById(R.id.root);
         createRows(Constants.DEFAULT_NB_HOLES, Constants.DEFAULT_NB_ROWS);
         setActiveRow(0);
@@ -99,4 +116,28 @@ public class MainActivity extends Activity {
         // replace it with the OK button
         row.addView(createOkButton());
     }
+
+    private void setCodePeg(final int rowIndex, final int holeIndex, final CodePeg codePeg) {}
+
+    /*
+     * Dialog.
+     */
+    @Override
+    protected Dialog onCreateDialog(final int id) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        switch (id) {
+            case DIALOG_CHOOSE_PEG:
+                builder.setTitle(R.string.dialog_choosePeg_title);
+                builder.setSingleChoiceItems(mPegListAdapter, -1, mChoosePegOnClickListener);
+                builder.setNegativeButton(android.R.string.cancel, null);
+            break;
+        }
+        return builder.create();
+    }
+
+    private DialogInterface.OnClickListener mChoosePegOnClickListener;
+
+    private PegListAdapter mPegListAdapter;
+
 }
