@@ -15,6 +15,7 @@ import org.jraf.android.slavebody.Constants;
 import org.jraf.android.slavebody.R;
 import org.jraf.android.slavebody.model.CodePeg;
 import org.jraf.android.slavebody.model.Game;
+import org.jraf.android.slavebody.util.PegUtil;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -31,16 +32,17 @@ import android.widget.LinearLayout;
 public class MainActivity extends Activity {
     private static final String TAG = Constants.TAG + MainActivity.class.getSimpleName();
 
-    private static final int DIALOG_CHOOSE_PEG = 0;
+    private static final int DIALOG_PICK_PEG = 0;
 
     private Game mGame;
 
     private ViewGroup mRootView;
     private LayoutInflater mLayoutInflater;
 
-    protected int mSelectingRowIndex;
-    protected int mSelectingPegIndex;
-    protected View mSelectingPeg;
+    protected int mCurrentRowIndex;
+    protected int mSelectedPegHoleIndex;
+    protected ImageView mSelectedPegView;
+
 
     @Override
     public void onCreate(final Bundle savedInstanceState) {
@@ -52,7 +54,7 @@ public class MainActivity extends Activity {
         mLayoutInflater = LayoutInflater.from(this);
         mRootView = (ViewGroup) findViewById(R.id.root);
         createRows(Constants.DEFAULT_NB_HOLES, Constants.DEFAULT_NB_ROWS);
-        setActiveRow(0);
+        setActiveRow(mCurrentRowIndex);
     }
 
     private void createRows(final int nbHoles, final int nbRows) {
@@ -64,21 +66,25 @@ public class MainActivity extends Activity {
 
     private View createRow(final int nbHoles, final int rowIndex) {
         final LinearLayout res = (LinearLayout) mLayoutInflater.inflate(R.layout.row, null, false);
+        final LinearLayout containerCodePegs = (LinearLayout) res.findViewById(R.id.container_codePegs);
         for (int i = 0; i < nbHoles; i++) {
-            final View peg = mLayoutInflater.inflate(R.layout.peg, res, false);
+            final ImageView peg = (ImageView) mLayoutInflater.inflate(R.layout.peg, containerCodePegs, false);
             peg.setClickable(true);
             final int selectingPegIndex = i;
             peg.setOnClickListener(new OnClickListener() {
                 public void onClick(final View v) {
-                    mSelectingRowIndex = rowIndex;
-                    mSelectingPegIndex = selectingPegIndex;
-                    mSelectingPeg = peg;
-                    showDialog(DIALOG_CHOOSE_PEG);
+                    mSelectedPegHoleIndex = selectingPegIndex;
+                    mSelectedPegView = peg;
+                    showDialog(DIALOG_PICK_PEG);
                 }
             });
-            res.addView(peg);
+            containerCodePegs.addView(peg);
         }
-        res.addView(createHintPegs(nbHoles));
+        final LinearLayout containerHintPegs = (LinearLayout) res.findViewById(R.id.container_hintPegs);
+        containerHintPegs.addView(createHintPegs(nbHoles));
+
+        res.findViewById(R.id.button_ok).setOnClickListener(mOkOnClickListener);
+
         return res;
     }
 
@@ -92,50 +98,61 @@ public class MainActivity extends Activity {
         return res;
     }
 
-    private View createOkButton() {
-        final LinearLayout res = (LinearLayout) mLayoutInflater.inflate(R.layout.hints, null, false);
-        res.addView(mLayoutInflater.inflate(R.layout.button_ok, null, false));
-
-        return res;
-    }
-
     private void setActiveRow(final int rowIndex) {
         final ViewGroup row = (ViewGroup) mRootView.getChildAt(rowIndex);
         row.setSelected(true);
-        final int childCount = row.getChildCount();
-        for (int i = 0; i < childCount - 1; i++) {
-            row.getChildAt(i).setFocusable(true);
-        }
-        // remove the hint pegs which is the last child of the row
-        row.removeViewAt(childCount - 1);
+        final LinearLayout containerCodePegs = (LinearLayout) row.findViewById(R.id.container_codePegs);
+        final LinearLayout containerHintPegs = (LinearLayout) row.findViewById(R.id.container_hintPegs);
 
-        // replace it with the OK button
-        row.addView(createOkButton());
+        // make holes focusable
+        final int childCount = containerCodePegs.getChildCount();
+        for (int i = 0; i < childCount - 1; i++) {
+            containerCodePegs.getChildAt(i).setFocusable(true);
+        }
+
+        // hide hint pegs which is the last child of the row
+        containerHintPegs.setVisibility(View.GONE);
+
+        // show the OK button
+        row.findViewById(R.id.button_ok).setVisibility(View.VISIBLE);
     }
 
-    private void setCodePeg(final int rowIndex, final int holeIndex, final CodePeg codePeg) {}
 
     /*
      * Dialog.
      */
+
     @Override
     protected Dialog onCreateDialog(final int id) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         switch (id) {
-            case DIALOG_CHOOSE_PEG:
-                builder.setTitle(R.string.dialog_choosePeg_title);
-                builder.setSingleChoiceItems(new PegListAdapter(this), -1, mChoosePegOnClickListener);
+            case DIALOG_PICK_PEG:
+                builder.setTitle(R.string.dialog_pickPeg_title);
+                builder.setSingleChoiceItems(new PegListAdapter(this), -1, mPickPegOnClickListener);
                 builder.setNegativeButton(android.R.string.cancel, null);
             break;
         }
         return builder.create();
     }
 
-    private final DialogInterface.OnClickListener mChoosePegOnClickListener = new DialogInterface.OnClickListener() {
-
+    private final DialogInterface.OnClickListener mPickPegOnClickListener = new DialogInterface.OnClickListener() {
         public void onClick(final DialogInterface dialog, final int which) {
             dialog.dismiss();
+            final CodePeg codePeg = CodePeg.values()[which];
+            mSelectedPegView.setImageResource(PegUtil.getDrawable(codePeg));
+            mGame.setGuess(mCurrentRowIndex, mSelectedPegHoleIndex, codePeg);
+            updateOkButton();
         }
     };
+
+    private void updateOkButton() {
+        final ViewGroup row = (ViewGroup) mRootView.getChildAt(mCurrentRowIndex);
+        row.findViewById(R.id.button_ok).setEnabled(mGame.isRowComplete(mCurrentRowIndex));
+    }
+
+    private final OnClickListener mOkOnClickListener = new OnClickListener() {
+        public void onClick(final View v) {}
+    };
+
 }

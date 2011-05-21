@@ -44,11 +44,30 @@ public class Game {
         mBoard.getCodeRow().setCodePegs(codePegs);
     }
 
-    public int newGuess(final CodePeg... codePegs) {
-        if (mCurrentGuess == mNbRows) {
-            throw new IndexOutOfBoundsException("Allready reached the maximum number of guesses");
+    public void setGuess(final int rowIndex, final int holeIndex, final CodePeg codePeg) {
+        if (rowIndex >= mNbRows) {
+            throw new IndexOutOfBoundsException("rowIndex >= mNbRows");
         }
-        mBoard.getGuessRows()[mCurrentGuess].setCodePegs(codePegs);
+        if (holeIndex >= mNbHoles) {
+            throw new IndexOutOfBoundsException("holeIndex >= mNbHoles");
+        }
+        mBoard.getGuessRows()[rowIndex].setCodePeg(holeIndex, codePeg);
+    }
+
+    public boolean isRowComplete(final int rowIndex) {
+        final Row row = mBoard.getGuessRows()[rowIndex];
+        for (int i = 0; i < mNbHoles; i++) {
+            if (row.getCodePegs()[i] == null) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public int validateGuess() {
+        if (mCurrentGuess == mNbRows) {
+            throw new IndexOutOfBoundsException("Already reached the maximum number of guesses");
+        }
         computeHints();
         mCurrentGuess++;
         return mCurrentGuess;

@@ -4,9 +4,34 @@
 
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    
-    android:gravity="center_vertical"
+
     android:orientation="horizontal"
     android:background="@drawable/row_bg"
+    android:gravity="center_vertical"
 >
+    <LinearLayout
+        android:id="@+id/container_codePegs"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:orientation="horizontal" />
+    <LinearLayout
+        android:id="@+id/container_hintPegs"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:gravity="center_vertical"
+        android:orientation="horizontal" />
+    <Button
+        android:id="@+id/button_ok"
+
+        android:layout_width="70dip"
+        android:layout_height="fill_parent"
+
+        android:text="@android:string/ok"
+        android:enabled="false"
+        android:visibility="gone"
+        android:layout_margin="4dip" />
 </LinearLayout>

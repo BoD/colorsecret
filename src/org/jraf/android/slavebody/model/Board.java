@@ -15,15 +15,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A game board.
- * Contains the code row, and an array of guess rows.
+ * A game board. Contains the code row, and an array of guess rows.
  */
 public class Board {
     private final int mNbRows;
 
     /**
-     * A row on the board.
-     * Contains ordered code pegs and unordered key pegs.
+     * A row on the board. Contains ordered code pegs and unordered key pegs.
      */
     public static class Row {
         private final int mNbHoles;
@@ -38,7 +36,7 @@ public class Board {
 
         public CodePeg[] getCodePegs() {
             final CodePeg[] res = new CodePeg[mNbHoles];
-            System.arraycopy(mCodePegs, 0, new CodePeg[mNbHoles], 0, mNbHoles);
+            System.arraycopy(mCodePegs, 0, res, 0, mNbHoles);
             return res;
         }
 
@@ -84,7 +82,7 @@ public class Board {
 
     public Row[] getGuessRows() {
         final Row[] res = new Row[mNbRows];
-        System.arraycopy(mGuessRows, 0, new CodePeg[mNbRows], 0, mNbRows);
+        System.arraycopy(mGuessRows, 0, res, 0, mNbRows);
         return res;
     }
 }
