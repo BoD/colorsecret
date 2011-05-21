@@ -5,11 +5,6 @@
     <size
         android:width="@dimen/peg_code"
         android:height="@dimen/peg_code" />
-    <padding
-        android:left="@dimen/peg_padding"
-        android:top="@dimen/peg_padding"
-        android:right="@dimen/peg_padding"
-        android:bottom="@dimen/peg_padding" />
     <gradient
         android:type="radial"
         android:centerX=".35"
@@ -17,4 +12,7 @@
         android:gradientRadius="45"
         android:startColor="@color/peg_inner_green"
         android:endColor="@color/peg_outer_green" />
+    <stroke
+        android:width="2dip"
+        android:color="#000" />
 </shape>

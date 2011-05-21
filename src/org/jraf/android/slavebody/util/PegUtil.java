@@ -13,6 +13,7 @@ package org.jraf.android.slavebody.util;
 
 import org.jraf.android.slavebody.R;
 import org.jraf.android.slavebody.model.CodePeg;
+import org.jraf.android.slavebody.model.HintPeg;
 
 public class PegUtil {
     public static int getDrawable(final CodePeg codePeg) {
@@ -31,6 +32,17 @@ public class PegUtil {
                 return R.drawable.peg_code_magenta;
         }
         throw new IllegalArgumentException("No drawable for code peg " + codePeg);
+
+    }
+
+    public static int getDrawable(final HintPeg hintPeg) {
+        switch (hintPeg) {
+            case COLOR_AND_POSITION:
+                return R.drawable.peg_hint_color_and_position;
+            case COLOR_ONLY:
+                return R.drawable.peg_hint_color_only;
+        }
+        throw new IllegalArgumentException("No drawable for hint peg " + hintPeg);
 
     }
 }

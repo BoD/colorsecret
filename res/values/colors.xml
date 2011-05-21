@@ -17,5 +17,7 @@
     <color name="peg_outer_blue">#44F</color>
     <color name="peg_inner_magenta">#FFF</color>
     <color name="peg_outer_magenta">#F4F</color>
+    <color name="peg_inner_white">#FFF</color>
+    <color name="peg_outer_white">#FEE</color>
 
 </resources>

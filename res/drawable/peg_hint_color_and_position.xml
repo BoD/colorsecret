@@ -3,16 +3,17 @@
     android:shape="oval"
 >
     <size
-        android:width="@dimen/peg_code"
-        android:height="@dimen/peg_code" />
+        android:width="@dimen/peg_hint"
+        android:height="@dimen/peg_hint" />
     <gradient
         android:type="radial"
-        android:gradientRadius="45"
         android:centerX=".35"
         android:centerY=".35"
-        android:startColor="@color/peg_inner_orange"
-        android:endColor="@color/peg_outer_orange" />
+        android:gradientRadius="16"
+        android:startColor="@color/peg_inner_red"
+        android:endColor="@color/peg_outer_red" />
     <stroke
-        android:width="2dip"
+        android:width="1dip"
         android:color="#000" />
+
 </shape>

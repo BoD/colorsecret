@@ -11,12 +11,18 @@
  */
 package org.jraf.android.slavebody.model;
 
+import java.util.List;
+
 import org.jraf.android.slavebody.model.Board.Row;
 
 /**
  * Represents an ongoing game.
  */
 public class Game {
+    public static enum GuessResult {
+        TRY_AGAIN, GAME_OVER, YOU_WON,
+    }
+
     private final int mNbHoles;
     private final int mNbRows;
 
@@ -64,13 +70,13 @@ public class Game {
         return true;
     }
 
-    public int validateGuess() {
+    public GuessResult validateGuess() {
         if (mCurrentGuess == mNbRows) {
             throw new IndexOutOfBoundsException("Already reached the maximum number of guesses");
         }
         computeHints();
         mCurrentGuess++;
-        return mCurrentGuess;
+        return GuessResult.TRY_AGAIN; // TODO
     }
 
     /**
@@ -102,5 +108,9 @@ public class Game {
                 }
             }
         }
+    }
+
+    public List<HintPeg> getHints(final int rowIndex) {
+        return mBoard.getGuessRows()[rowIndex].getHintPegs();
     }
 }
