@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 public class MainActivity extends Activity {
@@ -35,14 +36,29 @@ public class MainActivity extends Activity {
 
     private void createRows(final ViewGroup root, final int nbHoles, final int nbRows) {
         for (int i = 0; i < nbRows; i++) {
-            root.addView(createRow(nbHoles));
+            final View row = createRow(nbHoles);
+            root.addView(row);
+            if (i == 0) {
+                row.setSelected(true);
+            }
         }
     }
 
     private View createRow(final int nbHoles) {
         final LinearLayout res = (LinearLayout) mLayoutInflater.inflate(R.layout.row, null, false);
         for (int i = 0; i < nbHoles; i++) {
-            res.addView(mLayoutInflater.inflate(R.layout.peg_code, null, false));
+            res.addView(mLayoutInflater.inflate(R.layout.peg, null, false));
+        }
+        res.addView(createHintPegs(nbHoles));
+        return res;
+    }
+
+    private View createHintPegs(final int nbHoles) {
+        final LinearLayout res = (LinearLayout) mLayoutInflater.inflate(R.layout.hints, null, false);
+        for (int i = 0; i < nbHoles; i++) {
+            final ImageView peg = (ImageView) mLayoutInflater.inflate(R.layout.peg, null, false);
+            peg.setImageResource(R.drawable.peg_hint_empty);
+            res.addView(peg);
         }
         return res;
     }

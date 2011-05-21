@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="peg_code">60dip</dimen>
+    <dimen name="peg_hint">16dip</dimen>
+    <dimen name="peg_padding">5dip</dimen>
+</resources>
