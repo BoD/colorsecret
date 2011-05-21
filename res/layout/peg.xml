@@ -6,4 +6,5 @@
     android:layout_height="wrap_content"
     
     android:src="@drawable/peg_code_empty"
+    android:background="@drawable/peg_bg"
 />

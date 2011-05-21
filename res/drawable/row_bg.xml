@@ -5,7 +5,4 @@
     <item
         android:drawable="@color/row_bg_selected"
         android:state_selected="true" />
-    <!-- item
-        android:drawable="#0000" />
-         -->
 </selector>

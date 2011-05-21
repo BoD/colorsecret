@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-     <color name="row_bg_selected">#DDF</color>
+    <color name="row_bg_selected">#DDF</color>
+    
+    <color name="peg_bg_pressed">#FDD</color>
+    <color name="peg_bg_focused">#FCC</color>
 </resources>

@@ -15,6 +15,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -22,7 +23,12 @@ import android.widget.LinearLayout;
 public class MainActivity extends Activity {
     private static final String TAG = Constants.TAG + MainActivity.class.getSimpleName();
 
+    private ViewGroup mRootView;
     private LayoutInflater mLayoutInflater;
+
+    protected int mSelectingRowIndex;
+    protected int mSelectingPegIndex;
+    protected View mSelectingPeg;
 
     @Override
     public void onCreate(final Bundle savedInstanceState) {
@@ -31,23 +37,33 @@ public class MainActivity extends Activity {
 
         mLayoutInflater = LayoutInflater.from(this);
 
-        createRows((ViewGroup) findViewById(R.id.root), Constants.DEFAULT_NB_HOLES, Constants.DEFAULT_NB_ROWS);
+        mRootView = (ViewGroup) findViewById(R.id.root);
+        createRows(Constants.DEFAULT_NB_HOLES, Constants.DEFAULT_NB_ROWS);
+        setActiveRow(0);
     }
 
-    private void createRows(final ViewGroup root, final int nbHoles, final int nbRows) {
+    private void createRows(final int nbHoles, final int nbRows) {
         for (int i = 0; i < nbRows; i++) {
-            final View row = createRow(nbHoles);
-            root.addView(row);
-            if (i == 0) {
-                row.setSelected(true);
-            }
+            final View row = createRow(nbHoles, i);
+            mRootView.addView(row);
         }
     }
 
-    private View createRow(final int nbHoles) {
+    private View createRow(final int nbHoles, final int rowIndex) {
         final LinearLayout res = (LinearLayout) mLayoutInflater.inflate(R.layout.row, null, false);
         for (int i = 0; i < nbHoles; i++) {
-            res.addView(mLayoutInflater.inflate(R.layout.peg, null, false));
+            final View peg = mLayoutInflater.inflate(R.layout.peg, null, false);
+            peg.setClickable(true);
+            final int selectingPegIndex = i;
+            peg.setOnClickListener(new OnClickListener() {
+                public void onClick(final View v) {
+                    mSelectingRowIndex = rowIndex;
+                    mSelectingPegIndex = selectingPegIndex;
+                    mSelectingPeg = peg;
+
+                }
+            });
+            res.addView(peg);
         }
         res.addView(createHintPegs(nbHoles));
         return res;
@@ -61,5 +77,26 @@ public class MainActivity extends Activity {
             res.addView(peg);
         }
         return res;
+    }
+
+    private View createOkButton() {
+        final LinearLayout res = (LinearLayout) mLayoutInflater.inflate(R.layout.hints, null, false);
+        res.addView(mLayoutInflater.inflate(R.layout.button_ok, null, false));
+
+        return res;
+    }
+
+    private void setActiveRow(final int rowIndex) {
+        final ViewGroup row = (ViewGroup) mRootView.getChildAt(rowIndex);
+        row.setSelected(true);
+        final int childCount = row.getChildCount();
+        for (int i = 0; i < childCount - 1; i++) {
+            row.getChildAt(i).setFocusable(true);
+        }
+        // remove the hint pegs which is the last child of the row
+        row.removeViewAt(childCount - 1);
+
+        // replace it with the OK button
+        row.addView(createOkButton());
     }
 }
