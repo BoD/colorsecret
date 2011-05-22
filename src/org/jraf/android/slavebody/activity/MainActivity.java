@@ -30,6 +30,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -150,10 +152,10 @@ public class MainActivity extends Activity {
         }
 
         // hide hint pegs which is the last child of the row
-        containerHintPegs.setVisibility(View.GONE);
+        hide(containerHintPegs);
 
         // show the OK button
-        row.findViewById(R.id.button_ok).setVisibility(View.VISIBLE);
+        show(row.findViewById(R.id.button_ok));
     }
 
     private void setRowInactive(final int rowIndex) {
@@ -246,17 +248,36 @@ public class MainActivity extends Activity {
         final ViewGroup row = (ViewGroup) mRootView.getChildAt(mCurrentRowIndex);
 
         // hide ok button
-        row.findViewById(R.id.button_ok).setVisibility(View.GONE);
+        hide(row.findViewById(R.id.button_ok));
 
         // show hints container and fill it
         final LinearLayout containerHintPegs = (LinearLayout) row.findViewById(R.id.container_hintPegs);
-        containerHintPegs.setVisibility(View.VISIBLE);
+        show(containerHintPegs);
         int i = 0;
         for (final HintPeg hintPeg : hints) {
             final ImageView hintPegImageView = (ImageView) containerHintPegs.getChildAt(i);
             hintPegImageView.setImageResource(PegUtil.getDrawable(hintPeg));
             i++;
         }
+    }
+
+
+    /*
+     * Misc.
+     */
+
+    private void hide(final View v) {
+        v.setVisibility(View.INVISIBLE);
+        final Animation animFadeOut = AnimationUtils.loadAnimation(this, android.R.anim.fade_out);
+        animFadeOut.setDuration(200);
+        v.setAnimation(animFadeOut);
+    }
+
+    private void show(final View v) {
+        v.setVisibility(View.VISIBLE);
+        final Animation animFadeIn = AnimationUtils.loadAnimation(this, android.R.anim.fade_in);
+        animFadeIn.setDuration(200);
+        v.setAnimation(animFadeIn);
     }
 
 }

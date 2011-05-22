@@ -16,6 +16,7 @@
         <activity
             android:name="org.jraf.android.slavebody.activity.MainActivity"
             android:label="@string/app_name"
+            android:configChanges="orientation|keyboard|keyboardHidden"
         >
             <intent-filter>
                 <action
