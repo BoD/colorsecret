@@ -192,7 +192,14 @@ public class MainActivity extends Activity {
             break;
             case DIALOG_GAME_OVER:
                 builder.setTitle(R.string.dialog_gameOver_title);
-                builder.setMessage(R.string.dialog_gameOver_message); //TODO
+                final View dialogContents = mLayoutInflater.inflate(R.layout.dialog_game_over, null, false);
+                final LinearLayout container = (LinearLayout) dialogContents.findViewById(R.id.container_codePegs);
+                for (final CodePeg codePeg : mGame.getSecret()) {
+                    final ImageView pegView = (ImageView) mLayoutInflater.inflate(R.layout.peg, container, false);
+                    pegView.setImageResource(PegUtil.getDrawable(codePeg));
+                    container.addView(pegView);
+                }
+                builder.setView(dialogContents);
                 builder.setPositiveButton(R.string.dialog_gameOver_positive, mNewGameOnClickListener);
             break;
             case DIALOG_YOU_WON:

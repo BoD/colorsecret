@@ -50,6 +50,10 @@ public class Game {
         mBoard.getSecretRow().setCodePegs(codePegs);
     }
 
+    public CodePeg[] getSecret() {
+        return mBoard.getSecretRow().getCodePegs();
+    }
+
     public void setGuess(final int rowIndex, final int holeIndex, final CodePeg codePeg) {
         if (rowIndex >= mNbRows) {
             throw new IndexOutOfBoundsException("rowIndex >= mNbRows");

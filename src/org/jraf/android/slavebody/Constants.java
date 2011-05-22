@@ -14,7 +14,7 @@ package org.jraf.android.slavebody;
 public class Constants {
     public static final String TAG = "slavebody";
 
-    public static final int DEFAULT_NB_ROWS = 4;
+    public static final int DEFAULT_NB_ROWS = 12;
     public static final int DEFAULT_NB_HOLES = 4;
 
 }
