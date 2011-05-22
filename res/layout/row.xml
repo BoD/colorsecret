@@ -6,7 +6,6 @@
     android:layout_height="fill_parent"
 
     android:orientation="horizontal"
-    android:background="@drawable/row_bg"
     android:gravity="center_vertical"
 >
     <LinearLayout

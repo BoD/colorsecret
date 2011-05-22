@@ -99,12 +99,30 @@ public class Game {
      */
     private void computeHints() {
         final Row guessRow = mBoard.getGuessRows()[mCurrentGuess];
+        final CodePeg[] guessPegs = guessRow.getCodePegs();
         final Row secretRow = mBoard.getSecretRow();
         final CodePeg[] secretPegs = secretRow.getCodePegs();
 
+        // look for correct color+positions first
+        for (int idx = 0; idx < mNbHoles; idx++) {
+            final CodePeg guessPeg = guessPegs[idx];
+            final CodePeg secretPeg = secretPegs[idx];
+            if (secretPeg == guessPeg) {
+                guessRow.addHintPeg(HintPeg.COLOR_AND_POSITION);
+                // now that we found it, remove this guess peg from further comparisons
+                secretPegs[idx] = null;
+                guessPegs[idx] = null;
+            }
+        }
+
+        // now look for correct color only
         // iterate over guess pegs
         for (int guessIdx = 0; guessIdx < mNbHoles; guessIdx++) {
-            final CodePeg guessPeg = guessRow.getCodePegs()[guessIdx];
+            final CodePeg guessPeg = guessPegs[guessIdx];
+            if (guessPeg == null) {
+                //already found
+                continue;
+            }
 
             // look for this guess peg in the secret pegs
             for (int secretIdx = 0; secretIdx < mNbHoles; secretIdx++) {
@@ -112,18 +130,15 @@ public class Game {
 
                 if (secretPeg == guessPeg) {
                     // we found one!
-                    if (guessIdx == secretIdx) {
-                        // plus it's at the same index!
-                        guessRow.addHintPeg(HintPeg.COLOR_AND_POSITION);
-                    } else {
-                        guessRow.addHintPeg(HintPeg.COLOR_ONLY);
-                    }
+                    guessRow.addHintPeg(HintPeg.COLOR_ONLY);
                     // now that we found it, remove this secret peg from further comparisons
+                    guessPegs[guessIdx] = null;
                     secretPegs[secretIdx] = null;
                     break;
                 }
             }
         }
+
     }
 
     public List<HintPeg> getHints(final int rowIndex) {

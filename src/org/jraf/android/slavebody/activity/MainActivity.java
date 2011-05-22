@@ -71,13 +71,14 @@ public class MainActivity extends Activity {
 
     private void newGame() {
         mGame = new Game(Constants.DEFAULT_NB_HOLES, Constants.DEFAULT_NB_ROWS);
-        mGame.setSecret(CodePeg.RED, CodePeg.GREEN, CodePeg.BLUE, CodePeg.YELLOW);
+        //        mGame.setSecret(CodePeg.RED, CodePeg.GREEN, CodePeg.BLUE, CodePeg.YELLOW);
+        mGame.setSecret(CodePeg.RED, CodePeg.GREEN, CodePeg.YELLOW, CodePeg.YELLOW);
 
         mRootView = (ViewGroup) findViewById(R.id.root);
         mRootView.removeAllViews();
         createRows(Constants.DEFAULT_NB_HOLES, Constants.DEFAULT_NB_ROWS);
         mCurrentRowIndex = 0;
-        setActiveRow(mCurrentRowIndex);
+        setRowActive(mCurrentRowIndex);
     }
 
 
@@ -123,16 +124,16 @@ public class MainActivity extends Activity {
 
 
     /*
-     * Active / unactive rows.
+     * Active / inactive rows.
      */
 
-    private void setActiveRow(final int rowIndex) {
+    private void setRowActive(final int rowIndex) {
         final ViewGroup row = (ViewGroup) mRootView.getChildAt(rowIndex);
-        row.setSelected(true);
+        row.setBackgroundResource(R.color.row_bg_active);
         final LinearLayout containerCodePegs = (LinearLayout) row.findViewById(R.id.container_codePegs);
         final LinearLayout containerHintPegs = (LinearLayout) row.findViewById(R.id.container_hintPegs);
 
-        // make holes focusable
+        // make holes focusable, clickable
         final int childCount = containerCodePegs.getChildCount();
         for (int i = 0; i < childCount; i++) {
             final ImageView codePegView = (ImageView) containerCodePegs.getChildAt(i);
@@ -155,17 +156,18 @@ public class MainActivity extends Activity {
         row.findViewById(R.id.button_ok).setVisibility(View.VISIBLE);
     }
 
-    private void setUnactiveRow(final int rowIndex) {
+    private void setRowInactive(final int rowIndex) {
         final ViewGroup row = (ViewGroup) mRootView.getChildAt(rowIndex);
+        row.setBackgroundResource(R.color.row_bg_inactive);
         final LinearLayout containerCodePegs = (LinearLayout) row.findViewById(R.id.container_codePegs);
 
-        // make holes not focusable
+        // make holes not focusable, not clickable
         final int childCount = containerCodePegs.getChildCount();
         for (int i = 0; i < childCount; i++) {
             final View codePegView = containerCodePegs.getChildAt(i);
             codePegView.setFocusable(false);
-            codePegView.setClickable(false);
             codePegView.setOnClickListener(null);
+            codePegView.setClickable(false);
         }
     }
 
@@ -224,16 +226,16 @@ public class MainActivity extends Activity {
                 case GAME_OVER:
                     List<HintPeg> hints = mGame.getHints(mCurrentRowIndex);
                     showHints(hints);
-                    setUnactiveRow(mCurrentRowIndex);
+                    setRowInactive(mCurrentRowIndex);
                     showDialog(DIALOG_GAME_OVER);
                 break;
 
                 case TRY_AGAIN:
                     hints = mGame.getHints(mCurrentRowIndex);
                     showHints(hints);
-                    setUnactiveRow(mCurrentRowIndex);
+                    setRowInactive(mCurrentRowIndex);
                     mCurrentRowIndex++;
-                    setActiveRow(mCurrentRowIndex);
+                    setRowActive(mCurrentRowIndex);
                 break;
             }
         }
