@@ -11,14 +11,21 @@
  */
 package org.jraf.android.slavebody.model;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
+import org.jraf.android.slavebody.Constants;
 import org.jraf.android.slavebody.model.Board.Row;
+
+import android.util.Log;
 
 /**
  * Represents an ongoing game.
  */
 public class Game {
+    private static final String TAG = Constants.TAG + Game.class.getSimpleName();
+
     public static enum GuessResult {
         TRY_AGAIN, GAME_OVER, YOU_WON,
     }
@@ -48,6 +55,17 @@ public class Game {
 
     public void setSecret(final CodePeg... codePegs) {
         mBoard.getSecretRow().setCodePegs(codePegs);
+    }
+
+    public void setRandomSecret() {
+        final List<CodePeg> secret = new ArrayList<CodePeg>(mNbHoles);
+        final Random random = new Random();
+        final CodePeg[] values = CodePeg.values();
+        for (int i = 0; i < mNbHoles; i++) {
+            secret.add(values[random.nextInt(values.length)]);
+        }
+        if (Constants.LOGD) Log.d(TAG, "Secret: " + secret);
+        mBoard.getSecretRow().setCodePegs(secret.toArray(new CodePeg[mNbHoles]));
     }
 
     public CodePeg[] getSecret() {

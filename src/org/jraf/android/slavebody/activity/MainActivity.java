@@ -75,8 +75,8 @@ public class MainActivity extends Activity {
 
     private void newGame() {
         mGame = new Game(Constants.DEFAULT_NB_HOLES, Constants.DEFAULT_NB_ROWS);
-        //        mGame.setSecret(CodePeg.RED, CodePeg.GREEN, CodePeg.BLUE, CodePeg.YELLOW);
-        mGame.setSecret(CodePeg.RED, CodePeg.GREEN, CodePeg.YELLOW, CodePeg.YELLOW);
+        mGame.setRandomSecret();
+        //        mGame.setSecret(CodePeg.RED, CodePeg.GREEN, CodePeg.YELLOW, CodePeg.YELLOW);
 
         mRootView = (ViewGroup) findViewById(R.id.root);
         mRootView.removeAllViews();
