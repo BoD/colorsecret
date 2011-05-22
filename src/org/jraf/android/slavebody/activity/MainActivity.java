@@ -27,6 +27,8 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -41,6 +43,7 @@ public class MainActivity extends Activity {
     private static final int DIALOG_PICK_PEG = 0;
     private static final int DIALOG_GAME_OVER = 1;
     private static final int DIALOG_YOU_WON = 2;
+    private static final int DIALOG_ABOUT = 3;
 
     private Game mGame;
 
@@ -201,11 +204,18 @@ public class MainActivity extends Activity {
                 }
                 builder.setView(dialogContents);
                 builder.setPositiveButton(R.string.dialog_gameOver_positive, mNewGameOnClickListener);
+                builder.setCancelable(false);
             break;
             case DIALOG_YOU_WON:
                 builder.setTitle(R.string.dialog_youWon_title);
                 builder.setMessage(getString(R.string.dialog_youWon_message, mGame.getCurrentGuess() + 1));
                 builder.setPositiveButton(R.string.dialog_youWon_positive, mNewGameOnClickListener);
+                builder.setCancelable(false);
+            break;
+            case DIALOG_ABOUT:
+                builder.setTitle(R.string.dialog_about_title);
+                builder.setMessage(R.string.dialog_about_message);
+                builder.setPositiveButton(android.R.string.ok, null);
             break;
         }
         return builder.create();
@@ -287,6 +297,23 @@ public class MainActivity extends Activity {
         final Animation animFadeIn = AnimationUtils.loadAnimation(this, android.R.anim.fade_in);
         animFadeIn.setDuration(200);
         v.setAnimation(animFadeIn);
+    }
+
+
+    /*
+     * Menu.
+     */
+
+    @Override
+    public boolean onCreateOptionsMenu(final Menu menu) {
+        menu.add(Menu.NONE, 0, 0, R.string.menu_about).setIcon(android.R.drawable.ic_menu_info_details);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(final MenuItem item) {
+        showDialog(DIALOG_ABOUT);
+        return super.onOptionsItemSelected(item);
     }
 
 }
