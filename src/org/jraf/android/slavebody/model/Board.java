@@ -12,6 +12,7 @@
 package org.jraf.android.slavebody.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -51,9 +52,10 @@ public class Board {
             System.arraycopy(codePegs, 0, mCodePegs, 0, mNbHoles);
         }
 
-        @SuppressWarnings("rawtypes")
         public List<HintPeg> getHintPegs() {
-            return new ArrayList(mHintPegs);
+            final ArrayList<HintPeg> res = new ArrayList<HintPeg>(mHintPegs);
+            Collections.sort(res, HintPeg.COMPARATOR);
+            return res;
         }
 
         public void addHintPeg(final HintPeg hintPeg) {
@@ -64,20 +66,20 @@ public class Board {
         }
     }
 
-    private final Row mCodeRow;
+    private final Row mSecretRow;
     private final Row[] mGuessRows;
 
     public Board(final int nbHoles, final int nbRows) {
         mNbRows = nbRows;
-        mCodeRow = new Row(nbHoles);
+        mSecretRow = new Row(nbHoles);
         mGuessRows = new Row[nbRows];
         for (int i = 0; i < nbRows; i++) {
             mGuessRows[i] = new Row(nbHoles);
         }
     }
 
-    Row getCodeRow() {
-        return mCodeRow;
+    Row getSecretRow() {
+        return mSecretRow;
     }
 
     public Row[] getGuessRows() {

@@ -2,8 +2,8 @@
 <resources>
     <color name="row_bg_selected">#DDF</color>
     
-    <color name="peg_bg_pressed">#FDD</color>
-    <color name="peg_bg_focused">#FCC</color>
+    <color name="peg_bg_pressed">#FAA</color>
+    <color name="peg_bg_focused">#F88</color>
 
     <color name="peg_inner_orange">#FFF</color>
     <color name="peg_outer_orange">#F84</color>

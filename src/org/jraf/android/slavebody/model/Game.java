@@ -46,8 +46,8 @@ public class Game {
         return mBoard;
     }
 
-    public void setCode(final CodePeg... codePegs) {
-        mBoard.getCodeRow().setCodePegs(codePegs);
+    public void setSecret(final CodePeg... codePegs) {
+        mBoard.getSecretRow().setCodePegs(codePegs);
     }
 
     public void setGuess(final int rowIndex, final int holeIndex, final CodePeg codePeg) {
@@ -75,8 +75,23 @@ public class Game {
             throw new IndexOutOfBoundsException("Already reached the maximum number of guesses");
         }
         computeHints();
+        final List<HintPeg> hintPegs = mBoard.getGuessRows()[mCurrentGuess].getHintPegs();
+        int i = 0;
+        for (final HintPeg hintPeg : hintPegs) {
+            if (hintPeg != HintPeg.COLOR_AND_POSITION) {
+                break;
+            }
+            i++;
+        }
+        if (i == mNbHoles) {
+            // we have nbHoles color+position pegs, that means all of them are correct: we won
+            return GuessResult.YOU_WON;
+        }
         mCurrentGuess++;
-        return GuessResult.TRY_AGAIN; // TODO
+        if (mCurrentGuess == mNbRows) {
+            return GuessResult.GAME_OVER;
+        }
+        return GuessResult.TRY_AGAIN;
     }
 
     /**
@@ -84,26 +99,27 @@ public class Game {
      */
     private void computeHints() {
         final Row guessRow = mBoard.getGuessRows()[mCurrentGuess];
-        final Row codeRow = mBoard.getCodeRow();
+        final Row secretRow = mBoard.getSecretRow();
+        final CodePeg[] secretPegs = secretRow.getCodePegs();
 
         // iterate over guess pegs
         for (int guessIdx = 0; guessIdx < mNbHoles; guessIdx++) {
             final CodePeg guessPeg = guessRow.getCodePegs()[guessIdx];
 
-            // look for this guess peg in the code pegs
-            for (int codeIdx = 0; codeIdx < mNbHoles; codeIdx++) {
-                final CodePeg codePeg = codeRow.getCodePegs()[codeIdx];
+            // look for this guess peg in the secret pegs
+            for (int secretIdx = 0; secretIdx < mNbHoles; secretIdx++) {
+                final CodePeg secretPeg = secretPegs[secretIdx];
 
-                if (codePeg == guessPeg) {
+                if (secretPeg == guessPeg) {
                     // we found one!
-                    if (guessIdx == codeIdx) {
+                    if (guessIdx == secretIdx) {
                         // plus it's at the same index!
                         guessRow.addHintPeg(HintPeg.COLOR_AND_POSITION);
                     } else {
                         guessRow.addHintPeg(HintPeg.COLOR_ONLY);
                     }
-                    // now that we found it, remove this code peg from further comparisons
-                    codeRow.getCodePegs()[codeIdx] = null;
+                    // now that we found it, remove this secret peg from further comparisons
+                    secretPegs[secretIdx] = null;
                     break;
                 }
             }
@@ -112,5 +128,9 @@ public class Game {
 
     public List<HintPeg> getHints(final int rowIndex) {
         return mBoard.getGuessRows()[rowIndex].getHintPegs();
+    }
+
+    public int getCurrentGuess() {
+        return mCurrentGuess;
     }
 }
