@@ -67,6 +67,8 @@ public class MainActivity extends Activity {
 
     private final DialogInterface.OnClickListener mNewGameOnClickListener = new DialogInterface.OnClickListener() {
         public void onClick(final DialogInterface dialog, final int which) {
+            removeDialog(DIALOG_GAME_OVER);
+            removeDialog(DIALOG_YOU_WON);
             newGame();
         }
     };
