@@ -1,0 +1,13 @@
+<shape
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:shape="rectangle"
+>
+	<solid
+		android:color="@color/row_bg_receivingDragEvent" />
+
+	<corners
+		android:radius="3dip" />
+	<stroke
+		android:width="3dip"
+		android:color="@color/row_bg_dragging" />
+</shape>

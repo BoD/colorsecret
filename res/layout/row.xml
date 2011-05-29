@@ -1,44 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:android="http://schemas.android.com/apk/res/android"
 
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
 
-    android:orientation="horizontal"
-    android:gravity="center_vertical"
+	android:orientation="horizontal"
+	android:gravity="center_vertical"
 >
-    <LinearLayout
-        android:id="@+id/container_codePegs"
+	<LinearLayout
+		android:id="@+id/container_codePegs"
 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
 
-        android:orientation="horizontal" />
+		android:orientation="horizontal" />
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/peg_code"
-        android:layout_marginLeft="4dip"
-        android:gravity="center"
-    >
-        <LinearLayout
-            android:id="@+id/container_hintPegs"
+	<RelativeLayout
+		android:layout_width="wrap_content"
+		android:layout_height="@dimen/peg_code"
+		android:layout_marginLeft="4dip"
+		android:gravity="center"
+	>
+		<LinearLayout
+			android:id="@+id/container_hintPegs"
 
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/peg_code"
+			android:layout_width="wrap_content"
+			android:layout_height="@dimen/peg_code"
 
-            android:gravity="center_vertical"
-            android:orientation="horizontal" />
-        <Button
-            android:id="@+id/button_ok"
+			android:gravity="center_vertical"
+			android:orientation="vertical"
+		>
 
-            android:layout_width="70dip"
-            android:layout_height="fill_parent"
+			<LinearLayout
+				android:id="@+id/container_hintPegs1"
 
-            android:text="@android:string/ok"
-            android:enabled="false"
-            android:visibility="invisible"
-            android:layout_margin="4dip" />
-    </RelativeLayout>
+				android:layout_width="fill_parent"
+				android:layout_height="0px"
+				android:layout_weight="1"
+
+				android:gravity="center"
+				android:orientation="horizontal" />
+
+			<LinearLayout
+				android:id="@+id/container_hintPegs2"
+
+				android:layout_width="fill_parent"
+				android:layout_height="0px"
+				android:layout_weight="1"
+
+				android:gravity="center"
+				android:orientation="horizontal" />
+
+		</LinearLayout>
+		<Button
+			android:id="@+id/button_ok"
+
+			android:layout_width="70dip"
+			android:layout_height="fill_parent"
+
+			android:text="@android:string/ok"
+			android:enabled="false"
+			android:visibility="invisible"
+			android:layout_marginRight="4dip" />
+	</RelativeLayout>
 </LinearLayout>

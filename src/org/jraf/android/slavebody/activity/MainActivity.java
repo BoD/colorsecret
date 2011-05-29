@@ -13,20 +13,11 @@ package org.jraf.android.slavebody.activity;
 
 import java.util.List;
 
-import org.jraf.android.slavebody.Constants;
-import org.jraf.android.slavebody.R;
-import org.jraf.android.slavebody.model.CodePeg;
-import org.jraf.android.slavebody.model.Game;
-import org.jraf.android.slavebody.model.Game.GuessResult;
-import org.jraf.android.slavebody.model.HintPeg;
-import org.jraf.android.slavebody.util.PegUtil;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -37,8 +28,18 @@ import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AbsoluteLayout;
+import android.widget.AbsoluteLayout.LayoutParams;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+
+import org.jraf.android.slavebody.Constants;
+import org.jraf.android.slavebody.R;
+import org.jraf.android.slavebody.model.CodePeg;
+import org.jraf.android.slavebody.model.Game;
+import org.jraf.android.slavebody.model.Game.GuessResult;
+import org.jraf.android.slavebody.model.HintPeg;
+import org.jraf.android.slavebody.util.PegUtil;
 
 public class MainActivity extends Activity {
     private static final String TAG = Constants.TAG + MainActivity.class.getSimpleName();
@@ -48,15 +49,23 @@ public class MainActivity extends Activity {
     private static final int DIALOG_YOU_WON = 2;
     private static final int DIALOG_ABOUT = 3;
 
+    private int mNbHoles;
+    private int mNbRows;
+
     private Game mGame;
 
     private ViewGroup mRootView;
+    private final int[] mRootXy = new int[2];
     private ViewGroup mBoardView;
     private LayoutInflater mLayoutInflater;
 
     protected int mCurrentRowIndex;
     protected int mSelectedPegHoleIndex;
-    protected ImageView mSelectedPegView;
+    protected View mSelectedPegView;
+
+    protected CodePeg mDragingPeg;
+    private boolean mDragging;
+    private View mDraggingPegView;
 
     @Override
     public void onCreate(final Bundle savedInstanceState) {
@@ -80,16 +89,23 @@ public class MainActivity extends Activity {
         }
     };
 
+
     private void newGame() {
-        mGame = new Game(Constants.DEFAULT_NB_HOLES, Constants.DEFAULT_NB_ROWS);
-        mGame.setRandomSecret();
-        //mGame.setSecret(CodePeg.RED, CodePeg.GREEN, CodePeg.YELLOW, CodePeg.YELLOW);
+        mNbHoles = Constants.DEFAULT_NB_HOLES;
+        mNbRows = Constants.DEFAULT_NB_ROWS;
+
+        mGame = new Game(mNbHoles, mNbRows);
+//        mGame.setRandomSecret();
+        mGame.setSecret(CodePeg.RED, CodePeg.GREEN, CodePeg.YELLOW, CodePeg.YELLOW);
 
         mRootView = (ViewGroup) findViewById(R.id.root);
+
+        mDraggingPegView = mRootView.findViewById(R.id.draggingPeg);
+
         createPegPicker();
         mBoardView = (ViewGroup) findViewById(R.id.board);
         mBoardView.removeAllViews();
-        createRows(Constants.DEFAULT_NB_HOLES, Constants.DEFAULT_NB_ROWS);
+        createRows();
         mCurrentRowIndex = 0;
         setRowActive(mCurrentRowIndex);
     }
@@ -99,39 +115,47 @@ public class MainActivity extends Activity {
      * Layout.
      */
 
-    private void createRows(final int nbHoles, final int nbRows) {
-        for (int i = 0; i < nbRows; i++) {
-            final View row = createRow(nbHoles, i);
+    private void createRows() {
+        for (int i = 0; i < mNbRows; i++) {
+            final View row = createRow(i);
             mBoardView.addView(row);
         }
     }
 
-    private View createRow(final int nbHoles, final int rowIndex) {
+    private View createRow(final int rowIndex) {
         final LinearLayout res = (LinearLayout) mLayoutInflater.inflate(R.layout.row, null, false);
 
         final LinearLayout containerCodePegs = (LinearLayout) res.findViewById(R.id.container_codePegs);
-        createCodePegs(containerCodePegs, nbHoles);
+        createCodePegs(containerCodePegs);
 
         final LinearLayout containerHintPegs = (LinearLayout) res.findViewById(R.id.container_hintPegs);
-        createHintPegs(containerHintPegs, nbHoles);
+        createHintPegs(containerHintPegs);
 
         res.findViewById(R.id.button_ok).setOnClickListener(mOkOnClickListener);
 
         return res;
     }
 
-    private void createCodePegs(final LinearLayout containerCodePegs, final int nbHoles) {
-        for (int i = 0; i < nbHoles; i++) {
-            final ImageView peg = (ImageView) mLayoutInflater.inflate(R.layout.peg, containerCodePegs, false);
+    private void createCodePegs(final LinearLayout containerCodePegs) {
+        for (int i = 0; i < mNbHoles; i++) {
+            final View peg = mLayoutInflater.inflate(R.layout.peg, containerCodePegs, false);
             containerCodePegs.addView(peg);
         }
     }
 
-    private void createHintPegs(final LinearLayout containerHintPegs, final int nbHoles) {
-        for (int i = 0; i < nbHoles; i++) {
-            final ImageView peg = (ImageView) mLayoutInflater.inflate(R.layout.peg, containerHintPegs, false);
-            peg.setImageResource(R.drawable.peg_hint_empty);
-            containerHintPegs.addView(peg);
+    private void createHintPegs(final LinearLayout containerHintPegs) {
+        final LinearLayout containerHintPegs1 = (LinearLayout) containerHintPegs.findViewById(R.id.container_hintPegs1);
+        final LinearLayout containerHintPegs2 = (LinearLayout) containerHintPegs.findViewById(R.id.container_hintPegs2);
+        LinearLayout container;
+        for (int i = 0; i < mNbHoles; i++) {
+            if (i < mNbHoles / 2) {
+                container = containerHintPegs1;
+            } else {
+                container = containerHintPegs2;
+            }
+            final View peg = mLayoutInflater.inflate(R.layout.peg, container, false);
+            ((ImageView) peg.findViewById(R.id.peg)).setImageResource(R.drawable.peg_hint_empty);
+            container.addView(peg);
         }
     }
 
@@ -146,21 +170,90 @@ public class MainActivity extends Activity {
             } else {
                 pegPicker = pegPicker2;
             }
-            final ImageView peg = (ImageView) mLayoutInflater.inflate(R.layout.peg, pegPicker, false);
-            peg.setImageResource(PegUtil.getDrawable(codePeg));
-            pegPicker.addView(peg);
+            final View pegView = mLayoutInflater.inflate(R.layout.peg, pegPicker, false);
+            ((ImageView) pegView.findViewById(R.id.peg)).setImageResource(PegUtil.getDrawable(codePeg));
+            pegPicker.addView(pegView);
 
-            peg.setOnTouchListener(new OnTouchListener() {
-
+            pegView.setOnTouchListener(new OnTouchListener() {
                 public boolean onTouch(final View v, final MotionEvent event) {
-                    if (Constants.LOGD) Log.d(TAG, "" + event + " rawX=" + event.getRawX() + " rawY=" + event.getRawY());
-
+                    mDragingPeg = codePeg;
+                    handleDragEvent(event);
                     return true;
                 }
             });
 
             i++;
         }
+    }
+
+
+    /*
+     * Drag and drop.
+     */
+
+    protected void handleDragEvent(final MotionEvent event) {
+        final int eventX = (int) event.getRawX();
+        final int eventY = (int) event.getRawY();
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                setRowReceivingDrag(mCurrentRowIndex, true);
+                mDragging = true;
+                mDraggingPegView.setVisibility(View.VISIBLE);
+                final ImageView pegImageView = (ImageView) mDraggingPegView.findViewById(R.id.peg);
+                pegImageView.setImageResource(PegUtil.getDrawable(mDragingPeg));
+                pegImageView.getDrawable().setAlpha(127);
+                mRootView.getLocationOnScreen(mRootXy);
+            break;
+
+            case MotionEvent.ACTION_UP:
+                setRowReceivingDrag(mCurrentRowIndex, false);
+                mDragging = false;
+                if (mSelectedPegHoleIndex != -1) {
+                    ((ImageView) mSelectedPegView.findViewById(R.id.peg)).setImageResource(PegUtil.getDrawable(mDragingPeg));
+                    mGame.setGuess(mCurrentRowIndex, mSelectedPegHoleIndex, mDragingPeg);
+                    updateOkButton();
+                }
+                mDraggingPegView.setVisibility(View.GONE);
+                moveDraggingPegView(-mDraggingPegView.getWidth(), -mDraggingPegView.getHeight());
+            break;
+
+            case MotionEvent.ACTION_MOVE:
+                if (mDragging) {
+                    final int newX = eventX - mRootXy[0] - mDraggingPegView.getWidth() / 2;
+                    final int newY = eventY - mRootXy[1] - mDraggingPegView.getHeight() / 2;
+                    moveDraggingPegView(newX, newY);
+
+                    final ViewGroup row = (ViewGroup) mBoardView.getChildAt(mCurrentRowIndex);
+                    final LinearLayout containerCodePegs = (LinearLayout) row.findViewById(R.id.container_codePegs);
+                    final int childCount = containerCodePegs.getChildCount();
+                    final int[] pegXy = new int[2];
+                    mSelectedPegHoleIndex = -1;
+                    for (int i = 0; i < childCount; i++) {
+                        final View pegView = containerCodePegs.getChildAt(i);
+                        pegView.getLocationOnScreen(pegXy);
+                        final int pegX = pegXy[0];
+                        final int pegY = pegXy[1];
+                        final int pegWidth = pegView.getWidth();
+                        final int pegHeight = pegView.getHeight();
+                        if (pegX < eventX && eventX < pegX + pegWidth && pegY < eventY && eventY < pegY + pegHeight) {
+                            pegView.setBackgroundResource(R.drawable.peg_code_bg_dragging);
+                            mSelectedPegHoleIndex = i;
+                            mSelectedPegView = pegView;
+                        } else {
+                            pegView.setBackgroundResource(R.color.row_bg_receivingDragEvent);
+                        }
+                    }
+                }
+            break;
+        }
+    }
+
+
+    private void moveDraggingPegView(final int newX, final int newY) {
+        final AbsoluteLayout.LayoutParams layoutParams = (LayoutParams) mDraggingPegView.getLayoutParams();
+        layoutParams.x = newX;
+        layoutParams.y = newY;
+        mDraggingPegView.setLayoutParams(layoutParams);
     }
 
 
@@ -177,7 +270,7 @@ public class MainActivity extends Activity {
         // make holes focusable, clickable
         final int childCount = containerCodePegs.getChildCount();
         for (int i = 0; i < childCount; i++) {
-            final ImageView codePegView = (ImageView) containerCodePegs.getChildAt(i);
+            final View codePegView = containerCodePegs.getChildAt(i);
             codePegView.setFocusable(true);
             codePegView.setClickable(true);
             final int selectingPegIndex = i;
@@ -212,6 +305,22 @@ public class MainActivity extends Activity {
         }
     }
 
+    private void setRowReceivingDrag(final int rowIndex, final boolean receiving) {
+        final ViewGroup row = (ViewGroup) mBoardView.getChildAt(rowIndex);
+        if (receiving) {
+            row.setBackgroundResource(R.color.row_bg_receivingDragEvent);
+        } else {
+            row.setBackgroundResource(R.color.row_bg_active);
+            // reset all the holes / pegs to default bg
+            final LinearLayout containerCodePegs = (LinearLayout) row.findViewById(R.id.container_codePegs);
+            final int childCount = containerCodePegs.getChildCount();
+            for (int i = 0; i < childCount; i++) {
+                final View codePegView = containerCodePegs.getChildAt(i);
+                codePegView.setBackgroundResource(R.drawable.peg_bg);
+            }
+        }
+    }
+
 
     /*
      * Dialog.
@@ -232,8 +341,8 @@ public class MainActivity extends Activity {
                 final View dialogContents = mLayoutInflater.inflate(R.layout.dialog_game_over, null, false);
                 final LinearLayout container = (LinearLayout) dialogContents.findViewById(R.id.container_codePegs);
                 for (final CodePeg codePeg : mGame.getSecret()) {
-                    final ImageView pegView = (ImageView) mLayoutInflater.inflate(R.layout.peg, container, false);
-                    pegView.setImageResource(PegUtil.getDrawable(codePeg));
+                    final View pegView = mLayoutInflater.inflate(R.layout.peg, container, false);
+                    ((ImageView) pegView.findViewById(R.id.peg)).setImageResource(PegUtil.getDrawable(codePeg));
                     container.addView(pegView);
                 }
                 builder.setView(dialogContents);
@@ -259,7 +368,7 @@ public class MainActivity extends Activity {
         public void onClick(final DialogInterface dialog, final int which) {
             dialog.dismiss();
             final CodePeg codePeg = CodePeg.values()[which];
-            mSelectedPegView.setImageResource(PegUtil.getDrawable(codePeg));
+            ((ImageView) mSelectedPegView.findViewById(R.id.peg)).setImageResource(PegUtil.getDrawable(codePeg));
             mGame.setGuess(mCurrentRowIndex, mSelectedPegHoleIndex, codePeg);
             updateOkButton();
         }
@@ -306,10 +415,19 @@ public class MainActivity extends Activity {
         // show hints container and fill it
         final LinearLayout containerHintPegs = (LinearLayout) row.findViewById(R.id.container_hintPegs);
         show(containerHintPegs);
+
+        final LinearLayout containerHintPegs1 = (LinearLayout) containerHintPegs.findViewById(R.id.container_hintPegs1);
+        final LinearLayout containerHintPegs2 = (LinearLayout) containerHintPegs.findViewById(R.id.container_hintPegs2);
+        LinearLayout container;
         int i = 0;
         for (final HintPeg hintPeg : hints) {
-            final ImageView hintPegImageView = (ImageView) containerHintPegs.getChildAt(i);
-            hintPegImageView.setImageResource(PegUtil.getDrawable(hintPeg));
+            if (i < mNbHoles / 2) {
+                container = containerHintPegs1;
+            } else {
+                container = containerHintPegs2;
+            }
+            final View hintPegView = container.getChildAt(i % 2);
+            ((ImageView) hintPegView.findViewById(R.id.peg)).setImageResource(PegUtil.getDrawable(hintPeg));
             i++;
         }
     }

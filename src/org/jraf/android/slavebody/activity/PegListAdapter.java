@@ -14,16 +14,16 @@ package org.jraf.android.slavebody.activity;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.jraf.android.slavebody.R;
-import org.jraf.android.slavebody.model.CodePeg;
-import org.jraf.android.slavebody.util.PegUtil;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+
+import org.jraf.android.slavebody.R;
+import org.jraf.android.slavebody.model.CodePeg;
+import org.jraf.android.slavebody.util.PegUtil;
 
 public class PegListAdapter extends ArrayAdapter<CodePeg> {
     private final Context mContext;
@@ -40,7 +40,7 @@ public class PegListAdapter extends ArrayAdapter<CodePeg> {
             view = LayoutInflater.from(mContext).inflate(R.layout.peg_list_item, parent, false);
         }
 
-        final ImageView imageView = (ImageView) view.findViewById(R.id.peg);
+        final ImageView imageView = (ImageView) view.findViewById(R.id.pegView).findViewById(R.id.peg);
 
         final CodePeg codePeg = getItem(position);
         imageView.setImageResource(PegUtil.getDrawable(codePeg));

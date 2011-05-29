@@ -5,6 +5,7 @@
     <size
         android:width="@dimen/peg_code"
         android:height="@dimen/peg_code" />
+
     <gradient
         android:type="radial"
         android:centerX=".65"
