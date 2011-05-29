@@ -26,11 +26,14 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -48,6 +51,7 @@ public class MainActivity extends Activity {
     private Game mGame;
 
     private ViewGroup mRootView;
+    private ViewGroup mBoardView;
     private LayoutInflater mLayoutInflater;
 
     protected int mCurrentRowIndex;
@@ -79,10 +83,12 @@ public class MainActivity extends Activity {
     private void newGame() {
         mGame = new Game(Constants.DEFAULT_NB_HOLES, Constants.DEFAULT_NB_ROWS);
         mGame.setRandomSecret();
-        //        mGame.setSecret(CodePeg.RED, CodePeg.GREEN, CodePeg.YELLOW, CodePeg.YELLOW);
+        //mGame.setSecret(CodePeg.RED, CodePeg.GREEN, CodePeg.YELLOW, CodePeg.YELLOW);
 
         mRootView = (ViewGroup) findViewById(R.id.root);
-        mRootView.removeAllViews();
+        createPegPicker();
+        mBoardView = (ViewGroup) findViewById(R.id.board);
+        mBoardView.removeAllViews();
         createRows(Constants.DEFAULT_NB_HOLES, Constants.DEFAULT_NB_ROWS);
         mCurrentRowIndex = 0;
         setRowActive(mCurrentRowIndex);
@@ -96,7 +102,7 @@ public class MainActivity extends Activity {
     private void createRows(final int nbHoles, final int nbRows) {
         for (int i = 0; i < nbRows; i++) {
             final View row = createRow(nbHoles, i);
-            mRootView.addView(row);
+            mBoardView.addView(row);
         }
     }
 
@@ -129,13 +135,41 @@ public class MainActivity extends Activity {
         }
     }
 
+    private void createPegPicker() {
+        final ViewGroup pegPicker1 = (ViewGroup) mRootView.findViewById(R.id.pegPicker1);
+        final ViewGroup pegPicker2 = (ViewGroup) mRootView.findViewById(R.id.pegPicker2);
+        int i = 0;
+        for (final CodePeg codePeg : CodePeg.values()) {
+            ViewGroup pegPicker;
+            if (i < CodePeg.values().length / 2) {
+                pegPicker = pegPicker1;
+            } else {
+                pegPicker = pegPicker2;
+            }
+            final ImageView peg = (ImageView) mLayoutInflater.inflate(R.layout.peg, pegPicker, false);
+            peg.setImageResource(PegUtil.getDrawable(codePeg));
+            pegPicker.addView(peg);
+
+            peg.setOnTouchListener(new OnTouchListener() {
+
+                public boolean onTouch(final View v, final MotionEvent event) {
+                    if (Constants.LOGD) Log.d(TAG, "" + event + " rawX=" + event.getRawX() + " rawY=" + event.getRawY());
+
+                    return true;
+                }
+            });
+
+            i++;
+        }
+    }
+
 
     /*
      * Active / inactive rows.
      */
 
     private void setRowActive(final int rowIndex) {
-        final ViewGroup row = (ViewGroup) mRootView.getChildAt(rowIndex);
+        final ViewGroup row = (ViewGroup) mBoardView.getChildAt(rowIndex);
         row.setBackgroundResource(R.color.row_bg_active);
         final LinearLayout containerCodePegs = (LinearLayout) row.findViewById(R.id.container_codePegs);
         final LinearLayout containerHintPegs = (LinearLayout) row.findViewById(R.id.container_hintPegs);
@@ -164,7 +198,7 @@ public class MainActivity extends Activity {
     }
 
     private void setRowInactive(final int rowIndex) {
-        final ViewGroup row = (ViewGroup) mRootView.getChildAt(rowIndex);
+        final ViewGroup row = (ViewGroup) mBoardView.getChildAt(rowIndex);
         row.setBackgroundResource(R.color.row_bg_inactive);
         final LinearLayout containerCodePegs = (LinearLayout) row.findViewById(R.id.container_codePegs);
 
@@ -232,7 +266,7 @@ public class MainActivity extends Activity {
     };
 
     private void updateOkButton() {
-        final ViewGroup row = (ViewGroup) mRootView.getChildAt(mCurrentRowIndex);
+        final ViewGroup row = (ViewGroup) mBoardView.getChildAt(mCurrentRowIndex);
         row.findViewById(R.id.button_ok).setEnabled(mGame.isRowComplete(mCurrentRowIndex));
     }
 
@@ -264,7 +298,7 @@ public class MainActivity extends Activity {
 
 
     protected void showHints(final List<HintPeg> hints) {
-        final ViewGroup row = (ViewGroup) mRootView.getChildAt(mCurrentRowIndex);
+        final ViewGroup row = (ViewGroup) mBoardView.getChildAt(mCurrentRowIndex);
 
         // hide ok button
         hide(row.findViewById(R.id.button_ok));
