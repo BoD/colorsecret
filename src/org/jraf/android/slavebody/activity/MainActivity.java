@@ -95,8 +95,8 @@ public class MainActivity extends Activity {
         mNbRows = Constants.DEFAULT_NB_ROWS;
 
         mGame = new Game(mNbHoles, mNbRows);
-//        mGame.setRandomSecret();
-        mGame.setSecret(CodePeg.RED, CodePeg.GREEN, CodePeg.YELLOW, CodePeg.YELLOW);
+        mGame.setRandomSecret();
+//        mGame.setSecret(CodePeg.RED, CodePeg.GREEN, CodePeg.YELLOW, CodePeg.YELLOW);
 
         mRootView = (ViewGroup) findViewById(R.id.root);
 
@@ -162,6 +162,8 @@ public class MainActivity extends Activity {
     private void createPegPicker() {
         final ViewGroup pegPicker1 = (ViewGroup) mRootView.findViewById(R.id.pegPicker1);
         final ViewGroup pegPicker2 = (ViewGroup) mRootView.findViewById(R.id.pegPicker2);
+        pegPicker1.removeAllViews();
+        pegPicker2.removeAllViews();
         int i = 0;
         for (final CodePeg codePeg : CodePeg.values()) {
             ViewGroup pegPicker;
