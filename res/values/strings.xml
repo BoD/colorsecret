@@ -14,7 +14,7 @@
     <string name="dialog_youWon_positive">Play again</string>
 
     <string name="dialog_about_title">About</string>
-    <string name="dialog_about_message">BoD Slavebody v1.01\n\nCopyright (C) 2011 BoD (aka Benoit LUBEK).</string>
+    <string name="dialog_about_message">BoD Slavebody v${versionName} (${buildDate})\n\nCopyright (C) 2011 BoD (aka Benoit LUBEK).</string>
 
     <string name="menu_about">About</string>
 
