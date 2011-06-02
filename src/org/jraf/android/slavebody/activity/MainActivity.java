@@ -515,6 +515,7 @@ public class MainActivity extends Activity {
         if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.ECLAIR && keyCode == KeyEvent.KEYCODE_BACK
                 && event.getRepeatCount() == 0) {
             onBackPressed();
+            return true;
         }
 
         return super.onKeyDown(keyCode, event);
