@@ -18,6 +18,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -49,6 +50,7 @@ public class MainActivity extends Activity {
     private static final int DIALOG_GAME_OVER = 1;
     private static final int DIALOG_YOU_WON = 2;
     private static final int DIALOG_ABOUT = 3;
+    private static final int DIALOG_CONFIRM_EXIT = 4;
 
     private int mNbHoles;
     private int mNbRows;
@@ -353,8 +355,10 @@ public class MainActivity extends Activity {
                 builder.setSingleChoiceItems(new PegListAdapter(this), -1, mPickPegOnClickListener);
                 builder.setNegativeButton(android.R.string.cancel, null);
             break;
+
             case DIALOG_GAME_OVER:
                 builder.setTitle(R.string.dialog_gameOver_title);
+                builder.setIcon(android.R.drawable.ic_dialog_alert);
                 final View dialogContents = mLayoutInflater.inflate(R.layout.dialog_game_over, null, false);
                 final LinearLayout container = (LinearLayout) dialogContents.findViewById(R.id.container_codePegs);
                 for (final CodePeg codePeg : mGame.getSecret()) {
@@ -366,16 +370,32 @@ public class MainActivity extends Activity {
                 builder.setPositiveButton(R.string.dialog_gameOver_positive, mNewGameOnClickListener);
                 builder.setCancelable(false);
             break;
+
             case DIALOG_YOU_WON:
                 builder.setTitle(R.string.dialog_youWon_title);
+                builder.setIcon(android.R.drawable.ic_dialog_alert);
                 builder.setMessage(getString(R.string.dialog_youWon_message, mGame.getCurrentGuess() + 1));
                 builder.setPositiveButton(R.string.dialog_youWon_positive, mNewGameOnClickListener);
                 builder.setCancelable(false);
             break;
+
             case DIALOG_ABOUT:
                 builder.setTitle(R.string.dialog_about_title);
+                builder.setIcon(android.R.drawable.ic_dialog_info);
                 builder.setMessage(R.string.dialog_about_message);
                 builder.setPositiveButton(android.R.string.ok, null);
+            break;
+
+            case DIALOG_CONFIRM_EXIT:
+                builder.setTitle(android.R.string.dialog_alert_title);
+                builder.setIcon(android.R.drawable.ic_dialog_alert);
+                builder.setMessage(R.string.dialog_confirmExit_message);
+                builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int which) {
+                        finish();
+                    }
+                });
+                builder.setNegativeButton(android.R.string.no, null);
             break;
         }
         return builder.create();
@@ -485,4 +505,23 @@ public class MainActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+
+    /*
+     * Intercept back key.
+     * Cf: http://android-developers.blogspot.com/2009/12/back-and-other-hard-keys-three-stories.html
+     */
+    @Override
+    public boolean onKeyDown(final int keyCode, final KeyEvent event) {
+        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.ECLAIR && keyCode == KeyEvent.KEYCODE_BACK
+                && event.getRepeatCount() == 0) {
+            onBackPressed();
+        }
+
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public void onBackPressed() {
+        showDialog(DIALOG_CONFIRM_EXIT);
+    }
 }
