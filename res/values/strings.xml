@@ -19,5 +19,7 @@
     <string name="dialog_confirmExit_message">Are you sure you want to abort the current game?</string>
 
     <string name="menu_about">About</string>
+    <string name="menu_showPicker">Show picker</string>
+    <string name="menu_hidePicker">Hide picker</string>
 
 </resources>

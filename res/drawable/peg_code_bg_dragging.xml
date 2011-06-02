@@ -9,5 +9,5 @@
 		android:radius="4dip" />
 	<stroke
 		android:width="3dip"
-		android:color="@color/row_bg_dragging" />
+		android:color="#F00" />
 </shape>

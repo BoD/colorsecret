@@ -56,8 +56,8 @@
 		<Button
 			android:id="@+id/button_ok"
 
-			android:layout_width="70dip"
-			android:layout_height="fill_parent"
+			android:layout_width="45dip"
+			android:layout_height="@dimen/peg_code"
 
 			android:text="@android:string/ok"
 			android:enabled="false"

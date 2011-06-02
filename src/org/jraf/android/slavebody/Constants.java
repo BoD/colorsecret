@@ -19,4 +19,6 @@ public class Constants {
 
     public static final boolean LOGD = true;
 
+    public static final String PREF_PICKER_SHOWN = "PREF_PICKER_SHOWN";
+
 }

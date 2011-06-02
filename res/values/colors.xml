@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+<!--
     <color name="row_bg_active">#DDF</color>
     <color name="row_bg_inactive">#DFD</color>
     <color name="row_bg_receivingDragEvent">#FDD</color>
-    <color name="row_bg_dragging">#F00</color>
+     -->
 
-    <color name="peg_bg_pressed">#FAA</color>
-    <color name="peg_bg_focused">#F88</color>
+    <color name="peg_bg_pressed">#febd25</color>
+    <color name="peg_bg_focused">#ef7308</color>
 
 
 <!--

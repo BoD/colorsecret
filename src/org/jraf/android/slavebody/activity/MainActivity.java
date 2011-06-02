@@ -17,18 +17,19 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.AbsoluteLayout;
 import android.widget.AbsoluteLayout.LayoutParams;
 import android.widget.ImageView;
@@ -42,6 +43,7 @@ import org.jraf.android.slavebody.model.Game;
 import org.jraf.android.slavebody.model.Game.GuessResult;
 import org.jraf.android.slavebody.model.HintPeg;
 import org.jraf.android.slavebody.util.PegUtil;
+import org.jraf.android.slavebody.util.UiUtil;
 
 public class MainActivity extends Activity {
     private static final String TAG = Constants.TAG + MainActivity.class.getSimpleName();
@@ -178,10 +180,10 @@ public class MainActivity extends Activity {
 
             final LinearLayout.LayoutParams pegImageLayoutParams = (android.widget.LinearLayout.LayoutParams) pegImageView
                     .getLayoutParams();
-            pegImageLayoutParams.leftMargin = 0;
-            pegImageLayoutParams.topMargin = 0;
-            pegImageLayoutParams.bottomMargin = 0;
-            pegImageLayoutParams.rightMargin = 0;
+            pegImageLayoutParams.leftMargin = 1;
+            pegImageLayoutParams.topMargin = 1;
+            pegImageLayoutParams.bottomMargin = 1;
+            pegImageLayoutParams.rightMargin = 1;
             pegImageView.setLayoutParams(pegImageLayoutParams);
 
             pegPicker.addView(pegView);
@@ -195,6 +197,10 @@ public class MainActivity extends Activity {
                 }
             });
         }
+
+        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        final boolean pickerShown = sharedPreferences.getBoolean(Constants.PREF_PICKER_SHOWN, true);
+        pegPicker.setVisibility(pickerShown ? View.VISIBLE : View.GONE);
     }
 
 
@@ -251,7 +257,8 @@ public class MainActivity extends Activity {
                             mSelectedPegHoleIndex = i;
                             mSelectedPegView = pegView;
                         } else {
-                            pegView.setBackgroundResource(R.color.row_bg_receivingDragEvent);
+//                            pegView.setBackgroundResource(R.drawable.row_bg_dragging);
+                            pegView.setBackgroundResource(0);
                         }
                     }
                 }
@@ -274,7 +281,7 @@ public class MainActivity extends Activity {
 
     private void setRowActive(final int rowIndex) {
         final ViewGroup row = (ViewGroup) mBoardView.getChildAt(rowIndex);
-        row.setBackgroundResource(R.color.row_bg_active);
+        row.setBackgroundResource(R.drawable.row_bg_active);
         final LinearLayout containerCodePegs = (LinearLayout) row.findViewById(R.id.container_codePegs);
         final LinearLayout containerHintPegs = (LinearLayout) row.findViewById(R.id.container_hintPegs);
 
@@ -295,15 +302,15 @@ public class MainActivity extends Activity {
         }
 
         // hide hint pegs which is the last child of the row
-        hide(containerHintPegs);
+        UiUtil.hide(containerHintPegs);
 
         // show the OK button
-        show(row.findViewById(R.id.button_ok));
+        UiUtil.show(row.findViewById(R.id.button_ok));
     }
 
     private void setRowInactive(final int rowIndex) {
         final ViewGroup row = (ViewGroup) mBoardView.getChildAt(rowIndex);
-        row.setBackgroundResource(R.color.row_bg_inactive);
+        row.setBackgroundResource(R.drawable.row_bg_inactive);
         final LinearLayout containerCodePegs = (LinearLayout) row.findViewById(R.id.container_codePegs);
 
         // make holes not focusable, not clickable
@@ -319,9 +326,9 @@ public class MainActivity extends Activity {
     private void setRowReceivingDrag(final int rowIndex, final boolean receiving) {
         final ViewGroup row = (ViewGroup) mBoardView.getChildAt(rowIndex);
         if (receiving) {
-            row.setBackgroundResource(R.color.row_bg_receivingDragEvent);
+            row.setBackgroundResource(R.drawable.row_bg_dragging);
         } else {
-            row.setBackgroundResource(R.color.row_bg_active);
+            row.setBackgroundResource(R.drawable.row_bg_active);
             // reset all the row holes / pegs to default bg
             final LinearLayout containerCodePegs = (LinearLayout) row.findViewById(R.id.container_codePegs);
             int childCount = containerCodePegs.getChildCount();
@@ -447,11 +454,11 @@ public class MainActivity extends Activity {
         final ViewGroup row = (ViewGroup) mBoardView.getChildAt(mCurrentRowIndex);
 
         // hide ok button
-        hide(row.findViewById(R.id.button_ok));
+        UiUtil.hide(row.findViewById(R.id.button_ok));
 
         // show hints container and fill it
         final LinearLayout containerHintPegs = (LinearLayout) row.findViewById(R.id.container_hintPegs);
-        show(containerHintPegs);
+        UiUtil.show(containerHintPegs);
 
         final LinearLayout containerHintPegs1 = (LinearLayout) containerHintPegs.findViewById(R.id.container_hintPegs1);
         final LinearLayout containerHintPegs2 = (LinearLayout) containerHintPegs.findViewById(R.id.container_hintPegs2);
@@ -471,39 +478,47 @@ public class MainActivity extends Activity {
 
 
     /*
-     * Misc.
-     */
-
-    private void hide(final View v) {
-        v.setVisibility(View.INVISIBLE);
-        final Animation animFadeOut = AnimationUtils.loadAnimation(this, android.R.anim.fade_out);
-        animFadeOut.setDuration(200);
-        v.setAnimation(animFadeOut);
-    }
-
-    private void show(final View v) {
-        v.setVisibility(View.VISIBLE);
-        final Animation animFadeIn = AnimationUtils.loadAnimation(this, android.R.anim.fade_in);
-        animFadeIn.setDuration(200);
-        v.setAnimation(animFadeIn);
-    }
-
-
-    /*
      * Menu.
      */
 
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
-        menu.add(Menu.NONE, 0, 0, R.string.menu_about).setIcon(android.R.drawable.ic_menu_info_details);
+        new MenuInflater(this).inflate(R.menu.menu, menu);
         return true;
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(final Menu menu) {
+        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        final boolean pickerShown = sharedPreferences.getBoolean(Constants.PREF_PICKER_SHOWN, true);
+        menu.findItem(R.id.menu_showPicker).setTitle(pickerShown ? R.string.menu_hidePicker : R.string.menu_showPicker);
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
-        showDialog(DIALOG_ABOUT);
+        switch (item.getItemId()) {
+            case R.id.menu_about:
+                showDialog(DIALOG_ABOUT);
+            break;
+
+            case R.id.menu_showPicker:
+                final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+                boolean pickerShown = sharedPreferences.getBoolean(Constants.PREF_PICKER_SHOWN, true);
+                pickerShown = !pickerShown;
+                sharedPreferences.edit().putBoolean(Constants.PREF_PICKER_SHOWN, pickerShown).commit();
+                final View picker = mRootView.findViewById(R.id.pegPicker);
+                if (pickerShown) {
+                    UiUtil.show(picker);
+                } else {
+                    UiUtil.hide(picker);
+                }
+            break;
+        }
+
         return super.onOptionsItemSelected(item);
     }
+
 
 
     /*
