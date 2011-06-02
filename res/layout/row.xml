@@ -6,7 +6,7 @@
 	android:layout_height="fill_parent"
 
 	android:orientation="horizontal"
-	android:gravity="center_vertical"
+	android:gravity="center"
 >
 	<LinearLayout
 		android:id="@+id/container_codePegs"
