@@ -32,6 +32,7 @@ import android.widget.AbsoluteLayout;
 import android.widget.AbsoluteLayout.LayoutParams;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 
 import org.jraf.android.slavebody.Constants;
 import org.jraf.android.slavebody.R;
@@ -108,6 +109,8 @@ public class MainActivity extends Activity {
         createRows();
         mCurrentRowIndex = 0;
         setRowActive(mCurrentRowIndex);
+
+        ((ScrollView) mRootView.findViewById(R.id.scrollView)).fullScroll(View.FOCUS_UP);
     }
 
 
@@ -160,31 +163,35 @@ public class MainActivity extends Activity {
     }
 
     private void createPegPicker() {
-        final ViewGroup pegPicker1 = (ViewGroup) mRootView.findViewById(R.id.pegPicker1);
-        final ViewGroup pegPicker2 = (ViewGroup) mRootView.findViewById(R.id.pegPicker2);
-        pegPicker1.removeAllViews();
-        pegPicker2.removeAllViews();
-        int i = 0;
+        final ViewGroup pegPicker = (ViewGroup) mRootView.findViewById(R.id.pegPicker);
+        pegPicker.removeAllViews();
         for (final CodePeg codePeg : CodePeg.values()) {
-            ViewGroup pegPicker;
-            if (i < CodePeg.values().length / 2) {
-                pegPicker = pegPicker1;
-            } else {
-                pegPicker = pegPicker2;
-            }
             final View pegView = mLayoutInflater.inflate(R.layout.peg, pegPicker, false);
-            ((ImageView) pegView.findViewById(R.id.peg)).setImageResource(PegUtil.getDrawable(codePeg));
+            final LinearLayout.LayoutParams pegLayoutParams = (android.widget.LinearLayout.LayoutParams) pegView.getLayoutParams();
+            pegLayoutParams.weight = 1;
+            pegView.setLayoutParams(pegLayoutParams);
+
+            final ImageView pegImageView = (ImageView) pegView.findViewById(R.id.peg);
+            pegImageView.setImageResource(PegUtil.getDrawable(codePeg));
+
+            final LinearLayout.LayoutParams pegImageLayoutParams = (android.widget.LinearLayout.LayoutParams) pegImageView
+                    .getLayoutParams();
+            pegImageLayoutParams.leftMargin = 0;
+            pegImageLayoutParams.topMargin = 0;
+            pegImageLayoutParams.bottomMargin = 0;
+            pegImageLayoutParams.rightMargin = 0;
+            pegImageView.setLayoutParams(pegImageLayoutParams);
+
             pegPicker.addView(pegView);
 
             pegView.setOnTouchListener(new OnTouchListener() {
                 public boolean onTouch(final View v, final MotionEvent event) {
+                    v.setBackgroundResource(R.drawable.peg_code_bg_dragging);
                     mDragingPeg = codePeg;
                     handleDragEvent(event);
                     return true;
                 }
             });
-
-            i++;
         }
     }
 
@@ -313,12 +320,20 @@ public class MainActivity extends Activity {
             row.setBackgroundResource(R.color.row_bg_receivingDragEvent);
         } else {
             row.setBackgroundResource(R.color.row_bg_active);
-            // reset all the holes / pegs to default bg
+            // reset all the row holes / pegs to default bg
             final LinearLayout containerCodePegs = (LinearLayout) row.findViewById(R.id.container_codePegs);
-            final int childCount = containerCodePegs.getChildCount();
+            int childCount = containerCodePegs.getChildCount();
             for (int i = 0; i < childCount; i++) {
                 final View codePegView = containerCodePegs.getChildAt(i);
                 codePegView.setBackgroundResource(R.drawable.peg_bg);
+            }
+
+            // reset all the dragging pegs to default bg
+            final ViewGroup pegPicker = (ViewGroup) mRootView.findViewById(R.id.pegPicker);
+            childCount = pegPicker.getChildCount();
+            for (int i = 0; i < childCount; i++) {
+                final View codePegView = pegPicker.getChildAt(i);
+                codePegView.setBackgroundResource(0);
             }
         }
     }

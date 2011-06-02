@@ -5,6 +5,7 @@
 	android:layout_width="wrap_content"
 	android:layout_height="wrap_content"
 
+	android:background="@drawable/peg_bg"
 	android:gravity="center"
 >
 	<ImageView
@@ -14,6 +15,5 @@
 		android:layout_height="wrap_content"
 		android:layout_margin="3dip"
 
-		android:src="@drawable/peg_code_empty"
-		android:background="@drawable/peg_bg" />
+		android:src="@drawable/peg_code_empty" />
 </LinearLayout>

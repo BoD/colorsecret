@@ -13,29 +13,22 @@
 	>
 
 		<LinearLayout
-			android:id="@+id/pegPicker2"
+			android:id="@+id/pegPicker"
 
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:layout_alignParentBottom="true"
+			android:layout_alignParentTop="true"
 
 			android:gravity="center"
-			android:orientation="horizontal" />
-
-		<LinearLayout
-			android:id="@+id/pegPicker1"
-
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:layout_above="@id/pegPicker2"
-
-			android:gravity="center"
-			android:orientation="horizontal" />
+			android:orientation="horizontal"
+			android:background="#000" />
 
 		<ScrollView
+			android:id="@+id/scrollView"
+
 			android:layout_width="fill_parent"
 			android:layout_height="fill_parent"
-			android:layout_above="@id/pegPicker1"
+			android:layout_below="@id/pegPicker"
 		>
 			<LinearLayout
 				android:id="@+id/board"

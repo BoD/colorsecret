@@ -7,11 +7,11 @@
 
     android:gravity="center_horizontal"
     android:orientation="horizontal"
-    android:padding="4dip"
+    android:padding="0dip"
 >
     <include
         layout="@layout/peg"
         android:id="@+id/pegView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_width="60dip"
+        android:layout_height="60dip" />
 </LinearLayout>

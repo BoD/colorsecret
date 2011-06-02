@@ -3,10 +3,10 @@
 	android:shape="rectangle"
 >
 	<solid
-		android:color="@color/row_bg_receivingDragEvent" />
+		android:color="#0000" />
 
 	<corners
-		android:radius="3dip" />
+		android:radius="4dip" />
 	<stroke
 		android:width="3dip"
 		android:color="@color/row_bg_dragging" />
