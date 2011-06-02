@@ -9,7 +9,7 @@
         android:type="radial"
         android:centerX=".35"
         android:centerY=".35"
-        android:gradientRadius="45"
+        android:gradientRadius="30"
         android:startColor="@color/peg_inner_blue"
         android:endColor="@color/peg_outer_blue" />
     <stroke

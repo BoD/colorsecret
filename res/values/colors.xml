@@ -8,19 +8,47 @@
     <color name="peg_bg_pressed">#FAA</color>
     <color name="peg_bg_focused">#F88</color>
 
-    <color name="peg_inner_orange">#FFF</color>
-    <color name="peg_outer_orange">#F84</color>
-    <color name="peg_inner_red">#FFF</color>
-    <color name="peg_outer_red">#F44</color>
-    <color name="peg_inner_green">#FFF</color>
-    <color name="peg_outer_green">#4F4</color>
-    <color name="peg_inner_yellow">#FFF</color>
-    <color name="peg_outer_yellow">#FF4</color>
-    <color name="peg_inner_blue">#FFF</color>
-    <color name="peg_outer_blue">#44F</color>
-    <color name="peg_inner_magenta">#FFF</color>
-    <color name="peg_outer_magenta">#F4F</color>
-    <color name="peg_inner_white">#FFF</color>
+
+<!--
+	<color name="peg_outer_orange">#F80</color>
+    <color name="peg_inner_orange">#ffe1bf</color>
+
+    <color name="peg_outer_red">#F00</color>
+    <color name="peg_inner_red">#ffbfbf</color>
+
+    <color name="peg_outer_green">#0F0</color>
+    <color name="peg_inner_green">#bfffbf</color>
+
+    <color name="peg_outer_yellow">#FF0</color>
+    <color name="peg_inner_yellow">#ffffbf</color>
+
+    <color name="peg_outer_blue">#00F</color>
+	<color name="peg_inner_blue">#bfbfff</color>
+
+    <color name="peg_outer_magenta">#F0F</color>
+    <color name="peg_inner_magenta">#ffbfff</color>
+ -->
+
+	<color name="peg_outer_orange">#F80</color>
+    <color name="peg_inner_orange">#fff</color>
+
+    <color name="peg_outer_red">#F00</color>
+    <color name="peg_inner_red">#fff</color>
+
+    <color name="peg_outer_green">#0F0</color>
+    <color name="peg_inner_green">#fff</color>
+
+    <color name="peg_outer_yellow">#FF0</color>
+    <color name="peg_inner_yellow">#fff</color>
+
+    <color name="peg_outer_blue">#00F</color>
+	<color name="peg_inner_blue">#fff</color>
+
+    <color name="peg_outer_magenta">#F0F</color>
+    <color name="peg_inner_magenta">#fff</color>
+
+
     <color name="peg_outer_white">#FEE</color>
+    <color name="peg_inner_white">#FFF</color>
 
 </resources>

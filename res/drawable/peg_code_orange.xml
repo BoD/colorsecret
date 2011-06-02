@@ -7,7 +7,7 @@
         android:height="@dimen/peg_code" />
     <gradient
         android:type="radial"
-        android:gradientRadius="45"
+        android:gradientRadius="30"
         android:centerX=".35"
         android:centerY=".35"
         android:startColor="@color/peg_inner_orange"
