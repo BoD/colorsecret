@@ -11,6 +11,7 @@
  */
 package org.jraf.android.slavebody.activity;
 
+import java.io.IOException;
 import java.util.List;
 
 import android.app.Activity;
@@ -30,6 +31,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.AbsoluteLayout;
 import android.widget.AbsoluteLayout.LayoutParams;
 import android.widget.ImageView;
@@ -42,7 +44,9 @@ import org.jraf.android.slavebody.model.CodePeg;
 import org.jraf.android.slavebody.model.Game;
 import org.jraf.android.slavebody.model.Game.GuessResult;
 import org.jraf.android.slavebody.model.HintPeg;
+import org.jraf.android.slavebody.util.IoUtil;
 import org.jraf.android.slavebody.util.PegUtil;
+import org.jraf.android.slavebody.util.StringUtil;
 import org.jraf.android.slavebody.util.UiUtil;
 
 public class MainActivity extends Activity {
@@ -53,6 +57,7 @@ public class MainActivity extends Activity {
     private static final int DIALOG_YOU_WON = 2;
     private static final int DIALOG_ABOUT = 3;
     private static final int DIALOG_CONFIRM_EXIT = 4;
+    private static final int DIALOG_HELP = 5;
 
     private int mNbHoles;
     private int mNbRows;
@@ -404,6 +409,24 @@ public class MainActivity extends Activity {
                 });
                 builder.setNegativeButton(android.R.string.no, null);
             break;
+
+            case DIALOG_HELP:
+                builder.setTitle(R.string.dialog_help_title);
+                builder.setIcon(android.R.drawable.ic_dialog_info);
+                final WebView webView = new WebView(this);
+                String html;
+                try {
+                    html = IoUtil.inputStreamToString(getResources().openRawResource(R.raw.help));
+                } catch (final IOException e) {
+                    // should never happen
+                    throw new AssertionError("Could not read eula file");
+                }
+                html = StringUtil.reworkForWebView(html);
+                webView.loadData(html, "text/html", "utf-8");
+                builder.setView(webView);
+                builder.setPositiveButton(android.R.string.ok, null);
+            break;
+
         }
         return builder.create();
     }
@@ -513,6 +536,10 @@ public class MainActivity extends Activity {
                 } else {
                     UiUtil.hide(picker);
                 }
+            break;
+
+            case R.id.menu_help:
+                showDialog(DIALOG_HELP);
             break;
         }
 

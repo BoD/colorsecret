@@ -1,4 +1,12 @@
 <html>
+<head>
+<style>
+body {
+	background: black;
+	color: white;
+}
+</style>
+</head>
 <body>
 <h1>Welcome!</h1>
 The goal of the game is to guess a 4 color secret code chosen by the computer.<br/>
@@ -7,21 +15,29 @@ After each guess, the computer will give you a hint to tell you how close you ar
 The hint will contain a <font color="red"><b>red</b></font> peg for each correct color AND position, and a <b>white</b>
 peg for each correct color but incorrect position.<br/>
 <br/>
-For instance: if the secret code is PURPLE GREEN YELLOW ORANGE, and you guessed PURPLE YELLOW RED RED, the computer will give
-you one <font color="red"><b>red</b></font> peg for PURPLE (correct color AND position) - and one <b>white</b> peg for YELLOW
-(color present in the code, but not at the correct position).
+For instance: if the secret code is:<br/>
+<font color="purple">PURPLE</font> <font color="green">GREEN</font> <font color="yellow">YELLOW</font> <font color="orange">ORANGE</font>,<br/>
+and you guessed:<br/>
+<font color="purple">PURPLE</font> <font color="yellow">YELLOW</font> <font color="red">RED RED</font>,<br/>
+the computer will give you:
+<ul>
+<li>one <font color="red"><b>red</b></font> peg for <font color="purple">PURPLE</font> (correct color AND position)</li>
+<li>one <b>white</b> peg for <font color="yellow">YELLOW</font> (color present in the code, but not at the correct position).</li>
+</ul>
+Note: the order of the hint pegs is not important!<br/>
 <br/>
-Note: the order of the pegs in the hint is not important!<br/>
+Now that you have this hint, you can try again to guess the secret code.<br/>
 <br/>
-Now that you have this hint, you can try again to guess the secret code. If you find it in less than 12 guesses, you have one the game!
+If you find it in less than 12 guesses, you have won the game!
 
 <h1>How to play</h1>
-To play you can either tap (or click with trackball) on an empty hole and then chose a color,
-or use the picker on top of the board, and drag and drop to the hole.<br/>
-When you have chosen the 4 colors of your guess, press the 'OK' button.<br/>
+You start with the top, highlighted row.<br/>
+Either tap (or click with the trackball) on a hole and then pick a color,
+or use the picker on top of the board to <i>drag and drop</i> to a hole.<br/>
+When you have chosen the 4 colors of your guess, press the <b>OK</b> button.<br/>
 <br/>
 <br/>
-Good luck, code breaker!
+<i>Good luck, code breaker!</i>
 
 </body>
 </html>
