@@ -13,6 +13,7 @@ package org.jraf.android.slavebody.activity;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Random;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -20,6 +21,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.KeyEvent;
@@ -30,6 +32,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.webkit.WebView;
@@ -48,6 +51,7 @@ import org.jraf.android.slavebody.model.Game.GuessResult;
 import org.jraf.android.slavebody.model.HintPeg;
 import org.jraf.android.slavebody.util.IoUtil;
 import org.jraf.android.slavebody.util.PegUtil;
+import org.jraf.android.slavebody.util.SoundUtil;
 import org.jraf.android.slavebody.util.StringUtil;
 import org.jraf.android.slavebody.util.UiUtil;
 
@@ -73,6 +77,7 @@ public class MainActivity extends Activity {
 
     protected int mCurrentRowIndex;
     protected int mSelectedPegHoleIndex;
+    protected int mPrevSelectedPegHoleIndex;
     protected View mSelectedPegView;
 
     protected CodePeg mDragingPeg;
@@ -83,6 +88,17 @@ public class MainActivity extends Activity {
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+
+        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        final boolean soundEnabled = sharedPreferences.getBoolean(Constants.PREF_SOUND_ENABLED, true);
+        setVolumeControlStream(soundEnabled ? AudioManager.STREAM_MUSIC : AudioManager.USE_DEFAULT_STREAM_TYPE);
+        SoundUtil.setEnabled(soundEnabled);
+
+        final boolean firstUse = sharedPreferences.getBoolean(Constants.PREF_FIRST_USE, true);
+        if (firstUse) {
+            showDialog(DIALOG_HELP);
+            sharedPreferences.edit().putBoolean(Constants.PREF_FIRST_USE, false).commit();
+        }
 
         mLayoutInflater = LayoutInflater.from(this);
         newGame();
@@ -103,6 +119,8 @@ public class MainActivity extends Activity {
 
 
     private void newGame() {
+        SoundUtil.play(this, R.raw.newgame0);
+
         mNbHoles = Constants.DEFAULT_NB_HOLES;
         mNbRows = Constants.DEFAULT_NB_ROWS;
 
@@ -239,6 +257,7 @@ public class MainActivity extends Activity {
                 pegImageView.setImageResource(PegUtil.getDrawable(mDragingPeg));
                 pegImageView.getDrawable().setAlpha(127);
                 mRootView.getLocationOnScreen(mRootXy);
+                SoundUtil.play(this, R.raw.pick0);
             break;
 
             case MotionEvent.ACTION_UP:
@@ -251,6 +270,9 @@ public class MainActivity extends Activity {
                 }
                 mDraggingPegView.setVisibility(View.GONE);
                 moveDraggingPegView(-mDraggingPegView.getWidth(), -mDraggingPegView.getHeight());
+                if (mSelectedPegHoleIndex != -1) {
+                    SoundUtil.play(this, R.raw.drop0);
+                }
             break;
 
             case MotionEvent.ACTION_MOVE:
@@ -276,16 +298,23 @@ public class MainActivity extends Activity {
                             mSelectedPegHoleIndex = i;
                             mSelectedPegView = pegView;
                         } else {
-//                            pegView.setBackgroundResource(R.drawable.row_bg_dragging);
                             pegView.setBackgroundResource(0);
                         }
                     }
+                    if (mSelectedPegHoleIndex != -1) {
+                        if (mPrevSelectedPegHoleIndex != mSelectedPegHoleIndex) {
+                            SoundUtil.play(this, R.raw.detect0);
+                        }
+                    }
+                    mPrevSelectedPegHoleIndex = mSelectedPegHoleIndex;
                 }
             break;
         }
     }
 
 
+    @SuppressWarnings("deprecation")
+    // I know AbsoluteLayout is deprecated, but in this case, it makes sense to use it
     private void moveDraggingPegView(final int newX, final int newY) {
         final AbsoluteLayout.LayoutParams layoutParams = (LayoutParams) mDraggingPegView.getLayoutParams();
         layoutParams.x = newX;
@@ -309,10 +338,18 @@ public class MainActivity extends Activity {
         for (int i = 0; i < childCount; i++) {
             final View codePegView = containerCodePegs.getChildAt(i);
             codePegView.setFocusable(true);
+            codePegView.setOnFocusChangeListener(new OnFocusChangeListener() {
+                public void onFocusChange(final View v, final boolean hasFocus) {
+                    if (hasFocus) {
+                        SoundUtil.play(MainActivity.this, R.raw.detect0);
+                    }
+                }
+            });
             codePegView.setClickable(true);
             final int selectingPegIndex = i;
             codePegView.setOnClickListener(new OnClickListener() {
                 public void onClick(final View v) {
+                    SoundUtil.play(MainActivity.this, R.raw.pick0);
                     mSelectedPegHoleIndex = selectingPegIndex;
                     mSelectedPegView = codePegView;
                     showDialog(DIALOG_PICK_PEG);
@@ -447,6 +484,7 @@ public class MainActivity extends Activity {
 
     private final DialogInterface.OnClickListener mPickPegOnClickListener = new DialogInterface.OnClickListener() {
         public void onClick(final DialogInterface dialog, final int which) {
+            SoundUtil.play(MainActivity.this, R.raw.drop0);
             dialog.dismiss();
             final CodePeg codePeg = CodePeg.values()[which];
             ((ImageView) mSelectedPegView.findViewById(R.id.peg)).setImageResource(PegUtil.getDrawable(codePeg));
@@ -465,6 +503,7 @@ public class MainActivity extends Activity {
             final GuessResult guessResult = mGame.validateGuess();
             switch (guessResult) {
                 case YOU_WON:
+                    SoundUtil.play(MainActivity.this, R.raw.win0);
                     showDialog(DIALOG_YOU_WON);
                     SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
                     int totalGames = sharedPreferences.getInt(Constants.PREF_TOTAL_GAMES, 0);
@@ -481,7 +520,20 @@ public class MainActivity extends Activity {
                 break;
 
                 case GAME_OVER:
-                    List<HintPeg> hints = mGame.getHints(mCurrentRowIndex);
+                    // we have 3 'lost' sound. Pick one randomly
+                    switch (new Random().nextInt(3)) {
+                        case 0:
+                            SoundUtil.play(MainActivity.this, R.raw.lost0);
+                        break;
+                        case 1:
+                            SoundUtil.play(MainActivity.this, R.raw.lost1);
+                        break;
+                        case 2:
+                            SoundUtil.play(MainActivity.this, R.raw.lost2);
+                        break;
+                    }
+
+                    final List<HintPeg> hints = mGame.getHints(mCurrentRowIndex);
                     showHints(hints);
                     setRowInactive(mCurrentRowIndex);
                     showDialog(DIALOG_GAME_OVER);
@@ -494,8 +546,29 @@ public class MainActivity extends Activity {
                 break;
 
                 case TRY_AGAIN:
-                    hints = mGame.getHints(mCurrentRowIndex);
-                    showHints(hints);
+                    final List<HintPeg> hints2 = mGame.getHints(mCurrentRowIndex);
+                    if (hints2.size() == 0) {
+                        SoundUtil.play(MainActivity.this, R.raw.nohint0);
+                    } else {
+                        new Thread() {
+                            @Override
+                            public void run() {
+                                for (final HintPeg hintPeg : hints2) {
+                                    if (hintPeg == HintPeg.COLOR_AND_POSITION) {
+                                        SoundUtil.play(MainActivity.this, R.raw.redhint0);
+                                    } else {
+                                        SoundUtil.play(MainActivity.this, R.raw.whitehint0);
+                                    }
+                                    try {
+                                        sleep(200);
+                                    } catch (final InterruptedException e) {
+                                        // do nothing
+                                    }
+                                }
+                            }
+                        }.start();
+                    }
+                    showHints(hints2);
                     setRowInactive(mCurrentRowIndex);
                     mCurrentRowIndex++;
                     setRowActive(mCurrentRowIndex);
@@ -547,6 +620,10 @@ public class MainActivity extends Activity {
         final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         final boolean pickerShown = sharedPreferences.getBoolean(Constants.PREF_PICKER_SHOWN, true);
         menu.findItem(R.id.menu_showPicker).setTitle(pickerShown ? R.string.menu_hidePicker : R.string.menu_showPicker);
+
+        final boolean soundEnabled = sharedPreferences.getBoolean(Constants.PREF_SOUND_ENABLED, true);
+        menu.findItem(R.id.menu_soundOnOff).setTitle(soundEnabled ? R.string.menu_soundOff : R.string.menu_soundOn)
+                .setIcon(soundEnabled ? R.drawable.ic_menu_sound_off : R.drawable.ic_menu_sound_on);
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -558,7 +635,7 @@ public class MainActivity extends Activity {
             break;
 
             case R.id.menu_showPicker:
-                final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
                 boolean pickerShown = sharedPreferences.getBoolean(Constants.PREF_PICKER_SHOWN, true);
                 pickerShown = !pickerShown;
                 sharedPreferences.edit().putBoolean(Constants.PREF_PICKER_SHOWN, pickerShown).commit();
@@ -568,6 +645,15 @@ public class MainActivity extends Activity {
                 } else {
                     UiUtil.hide(picker);
                 }
+            break;
+
+            case R.id.menu_soundOnOff:
+                sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+                boolean soundEnabled = sharedPreferences.getBoolean(Constants.PREF_SOUND_ENABLED, true);
+                soundEnabled = !soundEnabled;
+                sharedPreferences.edit().putBoolean(Constants.PREF_SOUND_ENABLED, soundEnabled).commit();
+                setVolumeControlStream(soundEnabled ? AudioManager.STREAM_MUSIC : AudioManager.USE_DEFAULT_STREAM_TYPE);
+                SoundUtil.setEnabled(soundEnabled);
             break;
 
             case R.id.menu_help:
