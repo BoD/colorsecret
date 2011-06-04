@@ -12,5 +12,9 @@
 		android:icon="@drawable/ic_menu_showpicker"
 		android:checkable="true"
 		android:checked="true" />
+	<item
+		android:id="@+id/menu_help"
+		android:title="@string/menu_help"
+		android:icon="@android:drawable/ic_menu_help" />
 
 </menu>
