@@ -19,6 +19,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.KeyEvent;
@@ -37,6 +38,7 @@ import android.widget.AbsoluteLayout.LayoutParams;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
 import org.jraf.android.slavebody.Constants;
 import org.jraf.android.slavebody.R;
@@ -120,6 +122,8 @@ public class MainActivity extends Activity {
         setRowActive(mCurrentRowIndex);
 
         ((ScrollView) mRootView.findViewById(R.id.scrollView)).fullScroll(View.FOCUS_UP);
+
+        refreshScore();
     }
 
 
@@ -206,6 +210,16 @@ public class MainActivity extends Activity {
         final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         final boolean pickerShown = sharedPreferences.getBoolean(Constants.PREF_PICKER_SHOWN, true);
         pegPicker.setVisibility(pickerShown ? View.VISIBLE : View.GONE);
+    }
+
+    private void refreshScore() {
+        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        final int totalGames = sharedPreferences.getInt(Constants.PREF_TOTAL_GAMES, 0);
+        final int totalWon = sharedPreferences.getInt(Constants.PREF_TOTAL_WON, 0);
+        final int totalScore = sharedPreferences.getInt(Constants.PREF_TOTAL_SCORE, 0);
+        ((TextView) mRootView.findViewById(R.id.totalGames)).setText(getString(R.string.score_totalGames, totalGames));
+        ((TextView) mRootView.findViewById(R.id.totalWon)).setText(getString(R.string.score_totalWon, totalWon));
+        ((TextView) mRootView.findViewById(R.id.totalScore)).setText(getString(R.string.score_totalScore, totalScore));
     }
 
 
@@ -452,6 +466,18 @@ public class MainActivity extends Activity {
             switch (guessResult) {
                 case YOU_WON:
                     showDialog(DIALOG_YOU_WON);
+                    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+                    int totalGames = sharedPreferences.getInt(Constants.PREF_TOTAL_GAMES, 0);
+                    int totalWon = sharedPreferences.getInt(Constants.PREF_TOTAL_WON, 0);
+                    int totalScore = sharedPreferences.getInt(Constants.PREF_TOTAL_SCORE, 0);
+                    totalGames++;
+                    totalWon++;
+                    totalScore += (mNbRows - mCurrentRowIndex) * 10;
+                    Editor editor = sharedPreferences.edit();
+                    editor.putInt(Constants.PREF_TOTAL_GAMES, totalGames);
+                    editor.putInt(Constants.PREF_TOTAL_WON, totalWon);
+                    editor.putInt(Constants.PREF_TOTAL_SCORE, totalScore);
+                    editor.commit();
                 break;
 
                 case GAME_OVER:
@@ -459,6 +485,12 @@ public class MainActivity extends Activity {
                     showHints(hints);
                     setRowInactive(mCurrentRowIndex);
                     showDialog(DIALOG_GAME_OVER);
+                    sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+                    totalGames = sharedPreferences.getInt(Constants.PREF_TOTAL_GAMES, 0);
+                    totalGames++;
+                    editor = sharedPreferences.edit();
+                    editor.putInt(Constants.PREF_TOTAL_GAMES, totalGames);
+                    editor.commit();
                 break;
 
                 case TRY_AGAIN:

@@ -20,5 +20,8 @@ public class Constants {
     public static final boolean LOGD = true;
 
     public static final String PREF_PICKER_SHOWN = "PREF_PICKER_SHOWN";
+    public static final String PREF_TOTAL_GAMES = "PREF_TOTAL_GAMES";
+    public static final String PREF_TOTAL_WON = "PREF_TOTAL_WON";
+    public static final String PREF_TOTAL_SCORE = "PREF_TOTAL_SCORE";
 
 }

@@ -25,4 +25,8 @@
     <string name="menu_hidePicker">Hide picker</string>
     <string name="menu_help">Help</string>
 
+	<string name="score_totalGames">Total games: %d</string>
+	<string name="score_totalWon">Total won: %d</string>
+	<string name="score_totalScore">Total score: %d</string>
+
 </resources>
