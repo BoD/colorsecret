@@ -36,7 +36,7 @@
 				android:id="@+id/container_hintPegs1"
 
 				android:layout_width="fill_parent"
-				android:layout_height="0px"
+				android:layout_height="0dip"
 				android:layout_weight="1"
 
 				android:gravity="center"
@@ -46,7 +46,7 @@
 				android:id="@+id/container_hintPegs2"
 
 				android:layout_width="fill_parent"
-				android:layout_height="0px"
+				android:layout_height="0dip"
 				android:layout_weight="1"
 
 				android:gravity="center"
@@ -56,12 +56,16 @@
 		<Button
 			android:id="@+id/button_ok"
 
-			android:layout_width="45dip"
-			android:layout_height="@dimen/peg_code"
+			android:layout_width="0dip"
+			android:layout_height="0dip"
+			android:layout_alignLeft="@id/container_hintPegs"
+			android:layout_alignTop="@id/container_hintPegs"
+			android:layout_alignRight="@id/container_hintPegs"
+			android:layout_alignBottom="@id/container_hintPegs"
 
 			android:text="@android:string/ok"
 			android:enabled="false"
 			android:visibility="invisible"
-			android:layout_marginRight="4dip" />
+			android:background="@drawable/btn_bg" />
 	</RelativeLayout>
 </LinearLayout>

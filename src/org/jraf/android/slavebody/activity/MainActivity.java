@@ -139,7 +139,7 @@ public class MainActivity extends Activity {
         mCurrentRowIndex = 0;
         setRowActive(mCurrentRowIndex);
 
-        ((ScrollView) mRootView.findViewById(R.id.scrollView)).fullScroll(View.FOCUS_UP);
+        ((ScrollView) mRootView.findViewById(R.id.scrollView)).smoothScrollTo(0, 0);
 
         refreshScore();
     }
@@ -357,11 +357,11 @@ public class MainActivity extends Activity {
             });
         }
 
-        // hide hint pegs which is the last child of the row
-        UiUtil.hide(containerHintPegs);
+        // hide hint pegs
+        UiUtil.setInvisible(containerHintPegs);
 
         // show the OK button
-        UiUtil.show(row.findViewById(R.id.button_ok));
+        UiUtil.setVisible(row.findViewById(R.id.button_ok));
     }
 
     private void setRowInactive(final int rowIndex) {
@@ -500,6 +500,7 @@ public class MainActivity extends Activity {
 
     private final OnClickListener mOkOnClickListener = new OnClickListener() {
         public void onClick(final View v) {
+            v.setEnabled(false); // avoid double clicking
             final GuessResult guessResult = mGame.validateGuess();
             switch (guessResult) {
                 case YOU_WON:
@@ -582,11 +583,11 @@ public class MainActivity extends Activity {
         final ViewGroup row = (ViewGroup) mBoardView.getChildAt(mCurrentRowIndex);
 
         // hide ok button
-        UiUtil.hide(row.findViewById(R.id.button_ok));
+        UiUtil.setInvisible(row.findViewById(R.id.button_ok));
 
         // show hints container and fill it
         final LinearLayout containerHintPegs = (LinearLayout) row.findViewById(R.id.container_hintPegs);
-        UiUtil.show(containerHintPegs);
+        UiUtil.setVisible(containerHintPegs);
 
         final LinearLayout containerHintPegs1 = (LinearLayout) containerHintPegs.findViewById(R.id.container_hintPegs1);
         final LinearLayout containerHintPegs2 = (LinearLayout) containerHintPegs.findViewById(R.id.container_hintPegs2);
@@ -641,9 +642,9 @@ public class MainActivity extends Activity {
                 sharedPreferences.edit().putBoolean(Constants.PREF_PICKER_SHOWN, pickerShown).commit();
                 final View picker = mRootView.findViewById(R.id.pegPicker);
                 if (pickerShown) {
-                    UiUtil.show(picker);
+                    UiUtil.setVisible(picker);
                 } else {
-                    UiUtil.hide(picker);
+                    UiUtil.setGone(picker);
                 }
             break;
 

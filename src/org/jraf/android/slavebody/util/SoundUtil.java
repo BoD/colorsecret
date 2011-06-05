@@ -30,7 +30,7 @@ public class SoundUtil {
     private static boolean sEnabled;
 
     private static void init(final Context context) {
-        sSoundPool = new SoundPool(3, AudioManager.STREAM_MUSIC, 0);
+        sSoundPool = new SoundPool(4, AudioManager.STREAM_MUSIC, 0);
         sSoundIdMap = new HashMap<Integer, Integer>(SOUNDS.length);
         for (final int soundId : SOUNDS) {
             sSoundIdMap.put(soundId, sSoundPool.load(context, soundId, 1));
@@ -41,7 +41,7 @@ public class SoundUtil {
     public static void play(final Context context, final int soundId) {
         if (!sEnabled) return;
         if (!sInit) init(context);
-        sSoundPool.play(sSoundIdMap.get(soundId), 1.0f, 1.0f, 10, 0, 1.0f);
+        sSoundPool.play(sSoundIdMap.get(soundId), 1.0f, 1.0f, 1, 0, 1.0f);
     }
 
     public static void setEnabled(final boolean soundEnabled) {

@@ -17,14 +17,21 @@ import android.view.animation.AnimationUtils;
 
 public class UiUtil {
 
-    public static void hide(final View v) {
+    public static void setInvisible(final View v) {
+        v.setVisibility(View.INVISIBLE);
+        final Animation animFadeOut = AnimationUtils.loadAnimation(v.getContext(), android.R.anim.fade_out);
+        animFadeOut.setDuration(300);
+        v.setAnimation(animFadeOut);
+    }
+
+    public static void setGone(final View v) {
         v.setVisibility(View.GONE);
         final Animation animFadeOut = AnimationUtils.loadAnimation(v.getContext(), android.R.anim.fade_out);
         animFadeOut.setDuration(300);
         v.setAnimation(animFadeOut);
     }
 
-    public static void show(final View v) {
+    public static void setVisible(final View v) {
         v.setVisibility(View.VISIBLE);
         final Animation animFadeIn = AnimationUtils.loadAnimation(v.getContext(), android.R.anim.fade_in);
         animFadeIn.setDuration(300);
