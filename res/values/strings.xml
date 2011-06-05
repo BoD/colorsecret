@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="hello">Hello World, MainActivity!</string>
-    <string name="app_name">Slavebody</string>
+    <string name="app_name">Color Secret</string>
 
     <string name="dialog_pickPeg_title">Pick a color</string>
 
@@ -14,7 +13,7 @@
     <string name="dialog_youWon_positive">Play again</string>
 
     <string name="dialog_about_title">About</string>
-    <string name="dialog_about_message">BoD Slavebody v${versionName} (${buildDate})\n\nCopyright (C) 2011 BoD (aka Benoit LUBEK).</string>
+    <string name="dialog_about_message">BoD Color Secret v${versionName} (${buildDate})\n\nCopyright (C) 2011 BoD (aka Benoit LUBEK).</string>
 
     <string name="dialog_confirmExit_message">Are you sure you want to abort the current game?</string>
 

@@ -25,7 +25,7 @@
 package org.jraf.android.colorsecret;
 
 public class Constants {
-    public static final String TAG = "slavebody";
+    public static final String TAG = "colorsecret";
 
     public static final int DEFAULT_NB_ROWS = 12;
     public static final int DEFAULT_NB_HOLES = 4;
