@@ -9,7 +9,7 @@
  *
  * Copyright 2011 Benoit 'BoD' Lubek (BoD@JRAF.org).  All Rights Reserved.
  */
-package org.jraf.android.slavebody.model;
+package org.jraf.android.colorsecret.model;
 
 public enum CodePeg {
     ORANGE, RED, GREEN, YELLOW, BLUE, MAGENTA,

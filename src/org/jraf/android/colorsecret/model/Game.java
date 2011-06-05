@@ -9,14 +9,14 @@
  *
  * Copyright 2011 Benoit 'BoD' Lubek (BoD@JRAF.org).  All Rights Reserved.
  */
-package org.jraf.android.slavebody.model;
+package org.jraf.android.colorsecret.model;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import org.jraf.android.slavebody.Constants;
-import org.jraf.android.slavebody.model.Board.Row;
+import org.jraf.android.colorsecret.Constants;
+import org.jraf.android.colorsecret.model.Board.Row;
 
 import android.util.Log;
 

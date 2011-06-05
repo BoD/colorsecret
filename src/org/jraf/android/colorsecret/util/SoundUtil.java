@@ -9,7 +9,7 @@
  *
  * Copyright 2011 Benoit 'BoD' Lubek (BoD@JRAF.org).  All Rights Reserved.
  */
-package org.jraf.android.slavebody.util;
+package org.jraf.android.colorsecret.util;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,7 +18,7 @@ import android.content.Context;
 import android.media.AudioManager;
 import android.media.SoundPool;
 
-import org.jraf.android.slavebody.R;
+import org.jraf.android.colorsecret.R;
 
 public class SoundUtil {
 

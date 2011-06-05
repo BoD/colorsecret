@@ -9,7 +9,7 @@
  *
  * Copyright 2011 Benoit 'BoD' Lubek (BoD@JRAF.org).  All Rights Reserved.
  */
-package org.jraf.android.slavebody.util;
+package org.jraf.android.colorsecret.util;
 
 
 public class StringUtil {

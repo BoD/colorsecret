@@ -9,7 +9,7 @@
  *
  * Copyright 2011 Benoit 'BoD' Lubek (BoD@JRAF.org).  All Rights Reserved.
  */
-package org.jraf.android.slavebody;
+package org.jraf.android.colorsecret;
 
 public class Constants {
     public static final String TAG = "slavebody";

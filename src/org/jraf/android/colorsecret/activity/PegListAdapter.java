@@ -9,7 +9,7 @@
  *
  * Copyright 2011 Benoit 'BoD' Lubek (BoD@JRAF.org).  All Rights Reserved.
  */
-package org.jraf.android.slavebody.activity;
+package org.jraf.android.colorsecret.activity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,9 +21,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
-import org.jraf.android.slavebody.R;
-import org.jraf.android.slavebody.model.CodePeg;
-import org.jraf.android.slavebody.util.PegUtil;
+import org.jraf.android.colorsecret.model.CodePeg;
+import org.jraf.android.colorsecret.util.PegUtil;
+import org.jraf.android.colorsecret.R;
 
 public class PegListAdapter extends ArrayAdapter<CodePeg> {
     private final Context mContext;

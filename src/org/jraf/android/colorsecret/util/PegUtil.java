@@ -9,11 +9,11 @@
  *
  * Copyright 2011 Benoit 'BoD' Lubek (BoD@JRAF.org).  All Rights Reserved.
  */
-package org.jraf.android.slavebody.util;
+package org.jraf.android.colorsecret.util;
 
-import org.jraf.android.slavebody.R;
-import org.jraf.android.slavebody.model.CodePeg;
-import org.jraf.android.slavebody.model.HintPeg;
+import org.jraf.android.colorsecret.model.CodePeg;
+import org.jraf.android.colorsecret.model.HintPeg;
+import org.jraf.android.colorsecret.R;
 
 public class PegUtil {
     public static int getDrawable(final CodePeg codePeg) {

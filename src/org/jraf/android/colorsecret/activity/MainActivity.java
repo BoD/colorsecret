@@ -9,7 +9,7 @@
  *
  * Copyright 2011 Benoit 'BoD' Lubek (BoD@JRAF.org).  All Rights Reserved.
  */
-package org.jraf.android.slavebody.activity;
+package org.jraf.android.colorsecret.activity;
 
 import java.io.IOException;
 import java.util.List;
@@ -43,17 +43,17 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import org.jraf.android.slavebody.Constants;
-import org.jraf.android.slavebody.R;
-import org.jraf.android.slavebody.model.CodePeg;
-import org.jraf.android.slavebody.model.Game;
-import org.jraf.android.slavebody.model.Game.GuessResult;
-import org.jraf.android.slavebody.model.HintPeg;
-import org.jraf.android.slavebody.util.IoUtil;
-import org.jraf.android.slavebody.util.PegUtil;
-import org.jraf.android.slavebody.util.SoundUtil;
-import org.jraf.android.slavebody.util.StringUtil;
-import org.jraf.android.slavebody.util.UiUtil;
+import org.jraf.android.colorsecret.Constants;
+import org.jraf.android.colorsecret.model.CodePeg;
+import org.jraf.android.colorsecret.model.Game;
+import org.jraf.android.colorsecret.model.HintPeg;
+import org.jraf.android.colorsecret.model.Game.GuessResult;
+import org.jraf.android.colorsecret.util.IoUtil;
+import org.jraf.android.colorsecret.util.PegUtil;
+import org.jraf.android.colorsecret.util.SoundUtil;
+import org.jraf.android.colorsecret.util.StringUtil;
+import org.jraf.android.colorsecret.util.UiUtil;
+import org.jraf.android.colorsecret.R;
 
 public class MainActivity extends Activity {
     private static final String TAG = Constants.TAG + MainActivity.class.getSimpleName();
