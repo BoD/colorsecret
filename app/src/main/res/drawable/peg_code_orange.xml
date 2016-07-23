@@ -1,18 +1,17 @@
 <shape
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="oval"
->
+    android:shape="oval">
     <size
         android:width="@dimen/peg_code"
         android:height="@dimen/peg_code" />
     <gradient
-        android:type="radial"
-        android:gradientRadius="30"
-        android:centerX=".35"
-        android:centerY=".35"
+        android:centerX="35%"
+        android:centerY="35%"
+        android:endColor="@color/peg_outer_orange"
+        android:gradientRadius="65%"
         android:startColor="@color/peg_inner_orange"
-        android:endColor="@color/peg_outer_orange" />
+        android:type="radial" />
     <stroke
-        android:width="2dip"
+        android:width="2dp"
         android:color="#000" />
 </shape>

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="0px"
     android:layout_height="wrap_content"
+    android:layout_weight="1"
     android:background="@drawable/peg_bg"
     android:gravity="center">
 
@@ -10,6 +11,5 @@
         android:id="@+id/peg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="4dp"
-        android:src="@drawable/peg_code_empty" />
+        android:src="@drawable/peg_hint_empty" />
 </LinearLayout>

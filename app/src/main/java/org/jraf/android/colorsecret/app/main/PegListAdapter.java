@@ -34,28 +34,28 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
+import org.jraf.android.colorsecret.R;
 import org.jraf.android.colorsecret.model.CodePeg;
 import org.jraf.android.colorsecret.util.PegUtil;
-import org.jraf.android.colorsecret.R;
 
 public class PegListAdapter extends ArrayAdapter<CodePeg> {
-    private final Context mContext;
+    private Context mContext;
 
-    public PegListAdapter(final Context context) {
-        super(context, 0, new ArrayList<CodePeg>(Arrays.asList(CodePeg.values())));
+    public PegListAdapter(Context context) {
+        super(context, 0, new ArrayList<>(Arrays.asList(CodePeg.values())));
         mContext = context;
     }
 
     @Override
-    public View getView(final int position, final View convertView, final ViewGroup parent) {
+    public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
         if (view == null) {
             view = LayoutInflater.from(mContext).inflate(R.layout.peg_list_item, parent, false);
         }
 
-        final ImageView imageView = (ImageView) view.findViewById(R.id.pegView).findViewById(R.id.peg);
+        ImageView imageView = (ImageView) view.findViewById(R.id.pegView).findViewById(R.id.peg);
 
-        final CodePeg codePeg = getItem(position);
+        CodePeg codePeg = getItem(position);
         imageView.setImageResource(PegUtil.getDrawable(codePeg));
         return view;
     }

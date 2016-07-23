@@ -1,41 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TableLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="8dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="8dp"
+    android:stretchColumns="0,1,2">
 
-	android:layout_width="fill_parent"
-	android:layout_height="wrap_content"
+    <TableRow>
 
-	android:stretchColumns="0,1,2"
-	android:padding="2dip"
->
-	<TableRow>
-		<TextView
-			android:id="@+id/totalGames"
+        <TextView
+            android:id="@+id/totalGames"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:text="@string/score_totalGames" />
 
-			android:layout_height="wrap_content"
-			android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/totalWon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/score_totalWon" />
 
-			android:gravity="left"
-			android:text="@string/score_totalGames" />
-
-		<TextView
-			android:id="@+id/totalWon"
-
-			android:layout_height="wrap_content"
-			android:layout_width="wrap_content"
-
-			android:gravity="center"
-			android:text="@string/score_totalWon" />
-
-
-		<TextView
-			android:id="@+id/totalScore"
-
-			android:layout_height="wrap_content"
-			android:layout_width="wrap_content"
-
-			android:gravity="right"
-			android:text="@string/score_totalScore" />
-
-	</TableRow>
+        <TextView
+            android:id="@+id/totalScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:text="@string/score_totalScore" />
+    </TableRow>
 </TableLayout>

@@ -2,27 +2,28 @@
 <head>
 <style>
 body {
-	background: black;
-	color: white;
+    padding: 12pt;
+    text-align: justify;
 }
 </style>
 </head>
 <body>
-<h1>Welcome!</h1>
-The goal of the game is to guess a 4 color secret code chosen by the computer.<br/>
+The goal of the game is to guess a 4 color secret code.<br/>
 <br/>
-After each guess, the computer will give you a hint to tell you how close you are to the correct code.<br/>
-The hint will contain a <font color="red"><b>red</b></font> peg for each correct color AND position, and a <b>white</b>
-peg for each correct color but incorrect position.<br/>
-<br/>
-For instance if the secret code is:<br/>
-<font color="purple">PURPLE</font> <font color="green">GREEN</font> <font color="yellow">YELLOW</font> <font color="orange">ORANGE</font>,<br/>
-and you guessed:<br/>
-<font color="purple">PURPLE</font> <font color="yellow">YELLOW</font> <font color="red">RED RED</font>,<br/>
-the computer will give you:
+After each guess, the app will give you a hint to tell you how close you are to the correct code.<br/>
+The hint will contain:
 <ul>
-<li>one <font color="red"><b>red</b></font> peg for <font color="purple">PURPLE</font> (correct color AND position)</li>
-<li>one <b>white</b> peg for <font color="yellow">YELLOW</font> (color present in the code, but not at the correct position).</li>
+    <li>a <font color="red" size="-1">&#9679;</font> peg for each correct color and position</li>
+    <li>a <font size="-1">&#9675;</font> peg for each correct color but incorrect position.</li>
+</ul>
+For instance if the secret code is:<br/>
+<font color="purple">&#9679;</font> <font color="gold">&#9679;</font> <font color="orange">&#9679;</font> <font color="green">&#9679;</font>,<br/>
+and you guessed:<br/>
+<font color="purple">&#9679;</font> <font color="green">&#9679;</font> <font color="red">&#9679;</font> <font color="blue">&#9679;</font>,<br/>
+the app will give you:
+<ul>
+    <li>one <font color="red" size="-1">&#9679;</font> peg for <font color="purple">&#9679;</font> (correct color and position)</li>
+    <li>one <font size="-1">&#9675;</font> peg for <font color="green">&#9679;</font> (color present in the code, but somewhere else).</li>
 </ul>
 Note: the order of the hint pegs is not important!<br/>
 <br/>
@@ -30,9 +31,9 @@ Now that you have this hint, you can try again to guess the secret code.<br/>
 <br/>
 If you find it in less than 12 guesses, you have won the game!
 
-<h1>How to play</h1>
+<h2>How to play</h2>
 You start with the top, highlighted row.<br/>
-Either tap (or click with the trackball) on a hole and then pick a color,
+Either tap on a hole and then pick a color,
 or use the picker on top of the board to <i>drag and drop</i> to a hole.<br/>
 When you have chosen the 4 colors of your guess, press the <b>OK</b> button.<br/>
 <br/>
