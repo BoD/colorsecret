@@ -1,0 +1,15 @@
+<shape
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval"
+>
+    <size
+        android:width="@dimen/peg_hint"
+        android:height="@dimen/peg_hint" />
+    <gradient
+        android:type="radial"
+        android:centerX=".65"
+        android:centerY=".65"
+        android:gradientRadius="16"
+        android:startColor="#EEE"
+        android:endColor="#DDD" />
+</shape>

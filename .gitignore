@@ -1,2 +1,15 @@
-/gen
-/bin
+.gradle
+build
+build.number
+build.properties
+*.iml
+.idea/compiler.xml
+.idea/encodings.xml
+.idea/gradle.xml
+.idea/inspectionProfiles/
+.idea/misc.xml
+.idea/modules.xml
+.idea/runConfigurations.xml
+.idea/workspace.xml
+.idea/vcs.xml
+.idea/libraries
