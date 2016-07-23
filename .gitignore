@@ -2,6 +2,7 @@
 build
 build.number
 build.properties
+local.properties
 *.iml
 .idea/compiler.xml
 .idea/encodings.xml
