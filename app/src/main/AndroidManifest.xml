@@ -27,5 +27,9 @@
             </intent-filter>
         </activity>
 
+        <!-- About -->
+        <activity
+            android:name="org.jraf.android.util.about.AboutActivity"
+            android:label="@string/about_title" />
     </application>
 </manifest>

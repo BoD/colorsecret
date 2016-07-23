@@ -56,6 +56,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import org.jraf.android.colorsecret.BuildConfig;
 import org.jraf.android.colorsecret.Constants;
 import org.jraf.android.colorsecret.R;
 import org.jraf.android.colorsecret.model.CodePeg;
@@ -67,14 +68,12 @@ import org.jraf.android.colorsecret.util.PegUtil;
 import org.jraf.android.colorsecret.util.SoundUtil;
 import org.jraf.android.colorsecret.util.StringUtil;
 import org.jraf.android.colorsecret.util.UiUtil;
+import org.jraf.android.util.about.AboutActivityIntentBuilder;
 
 public class MainActivity extends AppCompatActivity {
-    private static String TAG = Constants.TAG + MainActivity.class.getSimpleName();
-
     private static final int DIALOG_PICK_PEG = 0;
     private static final int DIALOG_GAME_OVER = 1;
     private static final int DIALOG_YOU_WON = 2;
-    private static final int DIALOG_ABOUT = 3;
     private static final int DIALOG_CONFIRM_EXIT = 4;
     private static final int DIALOG_HELP = 5;
 
@@ -452,12 +451,6 @@ public class MainActivity extends AppCompatActivity {
                 builder.setCancelable(false);
                 break;
 
-            case DIALOG_ABOUT:
-                builder.setTitle(R.string.dialog_about_title);
-                builder.setMessage(R.string.dialog_about_message);
-                builder.setPositiveButton(android.R.string.ok, null);
-                break;
-
             case DIALOG_CONFIRM_EXIT:
                 builder.setTitle(android.R.string.dialog_alert_title);
                 builder.setMessage(R.string.dialog_confirmExit_message);
@@ -641,7 +634,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_about:
-                showDialog(DIALOG_ABOUT);
+                onAboutClicked();
                 break;
 
             case R.id.menu_showPicker:
@@ -674,6 +667,21 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private void onAboutClicked() {
+        AboutActivityIntentBuilder builder = new AboutActivityIntentBuilder();
+        builder.setAppName(getString(R.string.app_name));
+        builder.setBuildDate(BuildConfig.BUILD_DATE);
+        builder.setGitSha1(BuildConfig.GIT_SHA1);
+        builder.setAuthorCopyright(getString(R.string.about_authorCopyright));
+        builder.setLicense(getString(R.string.about_License));
+        builder.setShareTextSubject(getString(R.string.about_shareText_subject));
+        builder.setShareTextBody(getString(R.string.about_shareText_body));
+        builder.addLink(getString(R.string.about_email_uri), getString(R.string.about_email_text));
+        builder.addLink(getString(R.string.about_web_uri), getString(R.string.about_web_text));
+        builder.addLink(getString(R.string.about_sources_uri), getString(R.string.about_sources_text));
+        builder.setIsLightIcons(false);
+        startActivity(builder.build(this));
+    }
 
     /*
      * Intercept back key.

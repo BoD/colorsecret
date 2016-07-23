@@ -28,18 +28,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import org.jraf.android.colorsecret.Constants;
 import org.jraf.android.colorsecret.model.Board.Row;
-
-import android.util.Log;
+import org.jraf.android.util.log.Log;
 
 /**
  * Represents an ongoing game.
  */
 public class Game {
-    private static final String TAG = Constants.TAG + Game.class.getSimpleName();
-
-    public static enum GuessResult {
+    public enum GuessResult {
         TRY_AGAIN, GAME_OVER, YOU_WON,
     }
 
@@ -51,33 +47,27 @@ public class Game {
     private int mCurrentGuess = 0;
 
     /**
-     * @param nbHoles
-     *            number of holes for each row.
-     * @param nbRows
-     *            total number of rows.
+     * @param nbHoles number of holes for each row.
+     * @param nbRows total number of rows.
      */
-    public Game(final int nbHoles, final int nbRows) {
+    public Game(int nbHoles, int nbRows) {
         mNbHoles = nbHoles;
         mNbRows = nbRows;
         mBoard = new Board(nbHoles, nbRows);
     }
 
-    public Board getBoard() {
-        return mBoard;
-    }
-
-    public void setSecret(final CodePeg... codePegs) {
+    public void setSecret(CodePeg... codePegs) {
         mBoard.getSecretRow().setCodePegs(codePegs);
     }
 
     public void setRandomSecret() {
-        final List<CodePeg> secret = new ArrayList<CodePeg>(mNbHoles);
-        final Random random = new Random();
-        final CodePeg[] values = CodePeg.values();
+        List<CodePeg> secret = new ArrayList<>(mNbHoles);
+        Random random = new Random();
+        CodePeg[] values = CodePeg.values();
         for (int i = 0; i < mNbHoles; i++) {
             secret.add(values[random.nextInt(values.length)]);
         }
-        if (Constants.LOGD) Log.d(TAG, "Secret: " + secret);
+        Log.d("Secret: %s", secret);
         mBoard.getSecretRow().setCodePegs(secret.toArray(new CodePeg[mNbHoles]));
     }
 
@@ -85,7 +75,7 @@ public class Game {
         return mBoard.getSecretRow().getCodePegs();
     }
 
-    public void setGuess(final int rowIndex, final int holeIndex, final CodePeg codePeg) {
+    public void setGuess(int rowIndex, int holeIndex, CodePeg codePeg) {
         if (rowIndex >= mNbRows) {
             throw new IndexOutOfBoundsException("rowIndex >= mNbRows");
         }
@@ -95,8 +85,8 @@ public class Game {
         mBoard.getGuessRows()[rowIndex].setCodePeg(holeIndex, codePeg);
     }
 
-    public boolean isRowComplete(final int rowIndex) {
-        final Row row = mBoard.getGuessRows()[rowIndex];
+    public boolean isRowComplete(int rowIndex) {
+        Row row = mBoard.getGuessRows()[rowIndex];
         for (int i = 0; i < mNbHoles; i++) {
             if (row.getCodePegs()[i] == null) {
                 return false;
@@ -110,9 +100,9 @@ public class Game {
             throw new IndexOutOfBoundsException("Already reached the maximum number of guesses");
         }
         computeHints();
-        final List<HintPeg> hintPegs = mBoard.getGuessRows()[mCurrentGuess].getHintPegs();
+        List<HintPeg> hintPegs = mBoard.getGuessRows()[mCurrentGuess].getHintPegs();
         int i = 0;
-        for (final HintPeg hintPeg : hintPegs) {
+        for (HintPeg hintPeg : hintPegs) {
             if (hintPeg != HintPeg.COLOR_AND_POSITION) {
                 break;
             }
@@ -133,15 +123,15 @@ public class Game {
      * Compute the hint pegs for the current guess and add them to the board.
      */
     private void computeHints() {
-        final Row guessRow = mBoard.getGuessRows()[mCurrentGuess];
-        final CodePeg[] guessPegs = guessRow.getCodePegs();
-        final Row secretRow = mBoard.getSecretRow();
-        final CodePeg[] secretPegs = secretRow.getCodePegs();
+        Row guessRow = mBoard.getGuessRows()[mCurrentGuess];
+        CodePeg[] guessPegs = guessRow.getCodePegs();
+        Row secretRow = mBoard.getSecretRow();
+        CodePeg[] secretPegs = secretRow.getCodePegs();
 
         // look for correct color+positions first
         for (int idx = 0; idx < mNbHoles; idx++) {
-            final CodePeg guessPeg = guessPegs[idx];
-            final CodePeg secretPeg = secretPegs[idx];
+            CodePeg guessPeg = guessPegs[idx];
+            CodePeg secretPeg = secretPegs[idx];
             if (secretPeg == guessPeg) {
                 guessRow.addHintPeg(HintPeg.COLOR_AND_POSITION);
                 // now that we found it, remove this guess peg from further comparisons
@@ -153,7 +143,7 @@ public class Game {
         // now look for correct color only
         // iterate over guess pegs
         for (int guessIdx = 0; guessIdx < mNbHoles; guessIdx++) {
-            final CodePeg guessPeg = guessPegs[guessIdx];
+            CodePeg guessPeg = guessPegs[guessIdx];
             if (guessPeg == null) {
                 //already found
                 continue;
@@ -161,7 +151,7 @@ public class Game {
 
             // look for this guess peg in the secret pegs
             for (int secretIdx = 0; secretIdx < mNbHoles; secretIdx++) {
-                final CodePeg secretPeg = secretPegs[secretIdx];
+                CodePeg secretPeg = secretPegs[secretIdx];
 
                 if (secretPeg == guessPeg) {
                     // we found one!
@@ -176,7 +166,7 @@ public class Game {
 
     }
 
-    public List<HintPeg> getHints(final int rowIndex) {
+    public List<HintPeg> getHints(int rowIndex) {
         return mBoard.getGuessRows()[rowIndex].getHintPegs();
     }
 

@@ -25,12 +25,8 @@
 package org.jraf.android.colorsecret;
 
 public class Constants {
-    public static final String TAG = "colorsecret";
-
     public static final int DEFAULT_NB_ROWS = 12;
     public static final int DEFAULT_NB_HOLES = 4;
-
-    public static final boolean LOGD = true;
 
     public static final String PREF_PICKER_SHOWN = "PREF_PICKER_SHOWN";
     public static final String PREF_TOTAL_GAMES = "PREF_TOTAL_GAMES";
@@ -38,5 +34,4 @@ public class Constants {
     public static final String PREF_TOTAL_SCORE = "PREF_TOTAL_SCORE";
     public static final String PREF_SOUND_ENABLED = "PREF_SOUND_ENABLED";
     public static final String PREF_FIRST_USE = "PREF_FIRST_USE";
-
 }

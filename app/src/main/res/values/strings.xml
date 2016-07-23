@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Color Secret</string>
 
     <string name="dialog_pickPeg_title">Pick a color</string>
@@ -26,8 +26,20 @@
     <string name="menu_soundOn">Turn sounds on</string>
     <string name="menu_about">About</string>
 
-	<string name="score_totalGames">Total games: %d</string>
-	<string name="score_totalWon">Total won: %d</string>
-	<string name="score_totalScore">Total score: %d</string>
+    <string name="score_totalGames">Total games: %d</string>
+    <string name="score_totalWon">Total won: %d</string>
+    <string name="score_totalScore">Total score: %d</string>
+
+
+    <string name="about_authorCopyright" translatable="false" tools:ignore="TypographyOther">Copyright (C) 2011–2016 Benoit \'BoD\' Lubek.</string>
+    <string name="about_License" translatable="false">Licensed under the terms of the GNU General Public License.</string>
+    <string name="about_email_text">Contact the author</string>
+    <string name="about_email_uri" translatable="false">mailto:BoD@JRAF.org</string>
+    <string name="about_web_text">Author\'s web page</string>
+    <string name="about_web_uri" translatable="false">http://JRAF.org/android/</string>
+    <string name="about_sources_text">Source code on Github</string>
+    <string name="about_sources_uri" translatable="false">https://github.com/BoD/colorsecret/</string>
+    <string name="about_shareText_subject">Checkout out this app!</string>
+    <string name="about_shareText_body">This app is a game similar to the \'Mastermind\' board game!\nCheck it out here:\nhttp://play.google.com/store/apps/details?id=%s</string>
 
 </resources>
