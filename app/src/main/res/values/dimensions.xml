@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="peg_code">58dip</dimen>
-    <dimen name="peg_hint">16dip</dimen>
-    <dimen name="peg_padding">4dip</dimen>
+    <dimen name="peg_code">56dp</dimen>
+    <dimen name="peg_hint">16dp</dimen>
+    <dimen name="peg_padding">4dp</dimen>
 </resources>

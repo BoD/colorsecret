@@ -1,16 +1,14 @@
 <shape
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="oval"
->
+    android:shape="oval">
     <size
         android:width="@dimen/peg_code"
         android:height="@dimen/peg_code" />
-
     <gradient
-        android:type="radial"
-        android:centerX=".65"
-        android:centerY=".65"
-        android:gradientRadius="75"
-        android:startColor="#EEE"
-        android:endColor="#BBB" />
+        android:centerX="75%"
+        android:centerY="75%"
+        android:endColor="#1000"
+        android:gradientRadius="75%"
+        android:startColor="#0000"
+        android:type="radial" />
 </shape>

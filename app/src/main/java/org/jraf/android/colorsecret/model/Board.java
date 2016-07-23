@@ -38,27 +38,27 @@ public class Board {
      * A row on the board. Contains ordered code pegs and unordered key pegs.
      */
     public static class Row {
-        private final int mNbHoles;
-        private final CodePeg[] mCodePegs;
-        private final List<HintPeg> mHintPegs;
+        private int mNbHoles;
+        private CodePeg[] mCodePegs;
+        private List<HintPeg> mHintPegs;
 
-        public Row(final int nbHoles) {
+        public Row(int nbHoles) {
             mNbHoles = nbHoles;
             mCodePegs = new CodePeg[nbHoles];
-            mHintPegs = new ArrayList<HintPeg>(nbHoles);
+            mHintPegs = new ArrayList<>(nbHoles);
         }
 
         public CodePeg[] getCodePegs() {
-            final CodePeg[] res = new CodePeg[mNbHoles];
+            CodePeg[] res = new CodePeg[mNbHoles];
             System.arraycopy(mCodePegs, 0, res, 0, mNbHoles);
             return res;
         }
 
-        public void setCodePeg(final int position, final CodePeg codePeg) {
+        public void setCodePeg(int position, CodePeg codePeg) {
             mCodePegs[position] = codePeg;
         }
 
-        public void setCodePegs(final CodePeg... codePegs) {
+        public void setCodePegs(CodePeg... codePegs) {
             if (codePegs.length != mNbHoles) {
                 throw new IllegalArgumentException("You must pass exactly " + mNbHoles + " code pegs");
             }
@@ -66,12 +66,12 @@ public class Board {
         }
 
         public List<HintPeg> getHintPegs() {
-            final ArrayList<HintPeg> res = new ArrayList<HintPeg>(mHintPegs);
+            ArrayList<HintPeg> res = new ArrayList<HintPeg>(mHintPegs);
             Collections.sort(res, HintPeg.COMPARATOR);
             return res;
         }
 
-        public void addHintPeg(final HintPeg hintPeg) {
+        public void addHintPeg(HintPeg hintPeg) {
             if (mHintPegs.size() == mNbHoles) {
                 throw new IndexOutOfBoundsException("Cannot add more HintPegs");
             }
@@ -79,10 +79,10 @@ public class Board {
         }
     }
 
-    private final Row mSecretRow;
-    private final Row[] mGuessRows;
+    private Row mSecretRow;
+    private Row[] mGuessRows;
 
-    public Board(final int nbHoles, final int nbRows) {
+    public Board(int nbHoles, int nbRows) {
         mNbRows = nbRows;
         mSecretRow = new Row(nbHoles);
         mGuessRows = new Row[nbRows];
@@ -96,7 +96,7 @@ public class Board {
     }
 
     public Row[] getGuessRows() {
-        final Row[] res = new Row[mNbRows];
+        Row[] res = new Row[mNbRows];
         System.arraycopy(mGuessRows, 0, res, 0, mNbRows);
         return res;
     }
