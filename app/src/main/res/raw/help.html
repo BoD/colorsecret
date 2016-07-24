@@ -11,20 +11,23 @@ body {
 The goal of the game is to guess a 4 color secret code.<br/>
 <br/>
 After each guess, the app will give you a hint to tell you how close you are to the correct code.<br/>
-The hint will contain:
-<ul>
-    <li>a <font color="red" size="-1">&#9679;</font> peg for each correct color and position</li>
-    <li>a <font size="-1">&#9675;</font> peg for each correct color but incorrect position.</li>
-</ul>
+<br/>
+The hint will contain:<br/>
+- a <font color="red" size="+2">&#9679;</font> peg for each correct color and position<br/>
+- a <font size="+2">&#9675;</font> peg for each correct color but incorrect position.<br/>
+<br/>
 For instance if the secret code is:<br/>
-<font color="purple">&#9679;</font> <font color="gold">&#9679;</font> <font color="orange">&#9679;</font> <font color="green">&#9679;</font>,<br/>
+<font color="purple" size="+3">&#9679;</font> <font color="gold" size="+3">&#9679;</font> <font color="orange" size="+3">&#9679;</font> <font color="green"
+                                                                                                                                              size="+3">
+    &#9679;</font><br/>
 and you guessed:<br/>
-<font color="purple">&#9679;</font> <font color="green">&#9679;</font> <font color="red">&#9679;</font> <font color="blue">&#9679;</font>,<br/>
-the app will give you:
-<ul>
-    <li>one <font color="red" size="-1">&#9679;</font> peg for <font color="purple">&#9679;</font> (correct color and position)</li>
-    <li>one <font size="-1">&#9675;</font> peg for <font color="green">&#9679;</font> (color present in the code, but somewhere else).</li>
-</ul>
+<font color="purple" size="+3">&#9679;</font> <font color="green" size="+3">&#9679;</font> <font color="red" size="+3">&#9679;</font> <font color="blue"
+                                                                                                                                            size="+3">
+    &#9679;</font><br/>
+the app will give you:<br/>
+- one <font color="red" size="+2">&#9679;</font> peg for <font color="purple" size="+3">&#9679;</font> (correct color and position)<br/>
+- one <font size="+2">&#9675;</font> peg for <font color="green" size="+3">&#9679;</font> (color present in the code, but somewhere else).<br/>
+<br/>
 Note: the order of the hint pegs is not important!<br/>
 <br/>
 Now that you have this hint, you can try again to guess the secret code.<br/>

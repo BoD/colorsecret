@@ -523,7 +523,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
 
                 case GAME_OVER:
-                    // we have 3 'lost' sound. Pick one randomly
+                    // we have 3 'lost' sounds. Pick one randomly
                     switch (new Random().nextInt(3)) {
                         case 0:
                             SoundUtil.play(MainActivity.this, R.raw.lost0);

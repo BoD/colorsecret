@@ -5,15 +5,12 @@
     <string name="dialog_pickPeg_title">Pick a color</string>
 
     <string name="dialog_gameOver_title">Game over</string>
-    <string name="dialog_gameOver_message">Sorry, you did not guess the code. It was:</string>
+    <string name="dialog_gameOver_message">Sorry, you did not guess the code.\nIt was:</string>
     <string name="dialog_gameOver_positive">Try again</string>
 
     <string name="dialog_youWon_title">You won!</string>
     <string name="dialog_youWon_message">Congratulations!\nYou found the code in %d guesses.</string>
     <string name="dialog_youWon_positive">Play again</string>
-
-    <string name="dialog_about_title">About</string>
-    <string name="dialog_about_message">BoD Color Secret v${versionName} (${buildDate})\n\nCopyright (C) 2011 BoD (aka Benoit LUBEK).</string>
 
     <string name="dialog_confirmExit_message">Are you sure you want to abort the current game?</string>
 
